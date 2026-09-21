@@ -192,7 +192,7 @@
                                     <dt>Module</dt><dd><t t-esc="state.selectedNode.node.module"/></dd>
                                 </dl>
                                 <div t-if="getAccessModes(state.selectedNode.node.metadata).length" class="oav_access_modes">
-                                    <div class="oav_detail_label">Effective CRUD on this record</div>
+<div class="oav_detail_label">CRUD flags on this access record</div>
                                     <span t-foreach="getAccessModes(state.selectedNode.node.metadata)" t-as="mode" t-key="mode" class="oav_mode_chip"><t t-esc="mode"/></span>
                                 </div>
                                 <pre class="oav_metadata"><t t-esc="formatJson(state.selectedNode.node.metadata)"/></pre>
