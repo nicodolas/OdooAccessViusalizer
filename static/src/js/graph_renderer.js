@@ -1,3 +1,5 @@
+import { _t } from "@web/core/l10n/translation";
+
 const SVG_NS = "http://www.w3.org/2000/svg";
 
 const COLORS = {
@@ -57,7 +59,7 @@ export class AccessGraphRenderer {
         svg.setAttribute("class", "oav_graph_svg");
         svg.setAttribute("viewBox", "0 0 1200 720");
         svg.setAttribute("role", "img");
-        svg.setAttribute("aria-label", "Access relationship graph");
+        svg.setAttribute("aria-label", _t("Access relationship graph"));
         const viewport = document.createElementNS(SVG_NS, "g");
         svg.appendChild(viewport);
         this.svg = svg;

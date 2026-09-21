@@ -1,0 +1,990 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* odoo_access_visualizer
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 19.0+e-20250918\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-09-21 09:33+0000\n"
+"PO-Revision-Date: 2026-09-21 09:33+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: vi_VN\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#. module: odoo_access_visualizer
+#. odoo-javascript
+#: code:addons/odoo_access_visualizer/static/src/xml/access_visualizer.xml:0
+msgid "A new scan is running in the background."
+msgstr "Một lần quét mới đang chạy ở background."
+
+#. module: odoo_access_visualizer
+#: model:ir.model.constraint,message:odoo_access_visualizer.constraint_oav_access_snapshot_edge_edge_uniq
+msgid "A snapshot cannot contain duplicate graph edges."
+msgstr "Một snapshot không thể chứa các quan hệ đồ thị trùng nhau."
+
+#. module: odoo_access_visualizer
+#: model:ir.model.constraint,message:odoo_access_visualizer.constraint_oav_access_snapshot_node_node_key_uniq
+msgid "A snapshot cannot contain duplicate node keys."
+msgstr "Một snapshot không thể chứa các khóa node trùng nhau."
+
+#. module: odoo_access_visualizer
+#: model:ir.model.fields.selection,name:odoo_access_visualizer.selection__oav_access_finding__finding_type__acl_complexity
+msgid "ACL Complexity"
+msgstr "Độ phức tạp ACL"
+
+#. module: odoo_access_visualizer
+#: model:ir.model.fields.selection,name:odoo_access_visualizer.selection__oav_access_finding__finding_type__acl_redundancy
+msgid "ACL Redundancy"
+msgstr "ACL dư thừa"
+
+#. module: odoo_access_visualizer
+#: model:ir.model.fields.selection,name:odoo_access_visualizer.selection__oav_access_snapshot_node__node_type__acl
+msgid "Access Control"
+msgstr "Kiểm soát truy cập"
+
+#. module: odoo_access_visualizer
+#: model_terms:ir.ui.view,arch_db:odoo_access_visualizer.view_oav_snapshot_form
+msgid "Access Scan Snapshot"
+msgstr "Snapshot quét phân quyền"
+
+#. module: odoo_access_visualizer
+#: model:ir.actions.act_window,name:odoo_access_visualizer.action_oav_snapshot
+#: model_terms:ir.ui.view,arch_db:odoo_access_visualizer.view_oav_snapshot_list
+msgid "Access Scan Snapshots"
+msgstr "Snapshot quét phân quyền"
+
+#. module: odoo_access_visualizer
+#. odoo-javascript
+#: code:addons/odoo_access_visualizer/static/src/xml/access_visualizer.xml:0
+#: model:ir.actions.client,name:odoo_access_visualizer.action_oav_visualizer
+#: model:ir.ui.menu,name:odoo_access_visualizer.menu_oav_root
+msgid "Access Visualizer"
+msgstr "Trực quan hóa phân quyền"
+
+#. module: odoo_access_visualizer
+#: model:ir.model,name:odoo_access_visualizer.model_oav_access_finding
+msgid "Access Visualizer Finding"
+msgstr "Phát hiện của Trực quan hóa phân quyền"
+
+#. module: odoo_access_visualizer
+#: model:ir.model,name:odoo_access_visualizer.model_oav_access_snapshot_edge
+msgid "Access Visualizer Snapshot Edge"
+msgstr "Quan hệ snapshot của Trực quan hóa phân quyền"
+
+#. module: odoo_access_visualizer
+#: model:ir.model,name:odoo_access_visualizer.model_oav_access_snapshot_node
+msgid "Access Visualizer Snapshot Node"
+msgstr "Node snapshot của Trực quan hóa phân quyền"
+
+#. module: odoo_access_visualizer
+#: model:ir.actions.server,name:odoo_access_visualizer.ir_cron_oav_process_scan_ir_actions_server
+msgid "Access Visualizer: process scan queue"
+msgstr "Trực quan hóa phân quyền: xử lý hàng đợi quét"
+
+#. module: odoo_access_visualizer
+#. odoo-javascript
+#: code:addons/odoo_access_visualizer/static/src/xml/access_visualizer.xml:0
+msgid "Access controls"
+msgstr "Kiểm soát truy cập"
+
+#. module: odoo_access_visualizer
+#. odoo-javascript
+#: code:addons/odoo_access_visualizer/static/src/js/graph_renderer.js:0
+msgid "Access relationship graph"
+msgstr "Đồ thị quan hệ phân quyền"
+
+#. module: odoo_access_visualizer
+#. odoo-javascript
+#: code:addons/odoo_access_visualizer/static/src/xml/access_visualizer.xml:0
+msgid "Access surface"
+msgstr "Phạm vi phân quyền"
+
+#. module: odoo_access_visualizer
+#: model:ir.model.fields,field_description:odoo_access_visualizer.field_oav_access_finding__affected_edge_keys
+msgid "Affected Edge Keys"
+msgstr "Khóa edge bị ảnh hưởng"
+
+#. module: odoo_access_visualizer
+#: model:ir.model.fields,field_description:odoo_access_visualizer.field_oav_access_finding__affected_node_keys
+msgid "Affected Node Keys"
+msgstr "Khóa node bị ảnh hưởng"
+
+#. module: odoo_access_visualizer
+#: model:ir.model.fields.selection,name:odoo_access_visualizer.selection__oav_access_snapshot_edge__edge_type__applies
+msgid "Applies Rule"
+msgstr "Áp dụng rule"
+
+#. module: odoo_access_visualizer
+#: model:ir.model.fields,field_description:odoo_access_visualizer.field_oav_access_snapshot_node__category
+msgid "Category"
+msgstr "Danh mục"
+
+#. module: odoo_access_visualizer
+#: model:ir.model.fields,field_description:odoo_access_visualizer.field_oav_access_finding__certainty
+msgid "Certainty"
+msgstr "Độ chắc chắn"
+
+#. module: odoo_access_visualizer
+#. odoo-javascript
+#: code:addons/odoo_access_visualizer/static/src/xml/access_visualizer.xml:0
+msgid ""
+"Choose a layer or search above. Focused maps are easier to read and safer "
+"for large databases."
+msgstr ""
+"Hãy chọn một lớp hoặc tìm kiếm ở trên. Bản đồ có trọng tâm dễ đọc hơn và an "
+"toàn hơn với database lớn."
+
+#. module: odoo_access_visualizer
+#. odoo-javascript
+#: code:addons/odoo_access_visualizer/static/src/xml/access_visualizer.xml:0
+msgid "Choose a layer…"
+msgstr "Chọn một lớp…"
+
+#. module: odoo_access_visualizer
+#. odoo-javascript
+#: code:addons/odoo_access_visualizer/static/src/xml/access_visualizer.xml:0
+msgid "Choose a question instead of staring at the whole system."
+msgstr "Hãy chọn một câu hỏi thay vì nhìn toàn bộ hệ thống cùng lúc."
+
+#. module: odoo_access_visualizer
+#. odoo-javascript
+#: code:addons/odoo_access_visualizer/static/src/xml/access_visualizer.xml:0
+msgid "Click any node to see its source, relationships and evidence."
+msgstr "Nhấn vào node để xem source, quan hệ và bằng chứng."
+
+#. module: odoo_access_visualizer
+#: model:ir.model.fields.selection,name:odoo_access_visualizer.selection__oav_access_snapshot__state__completed
+msgid "Completed"
+msgstr "Hoàn tất"
+
+#. module: odoo_access_visualizer
+#: model:ir.model.fields,field_description:odoo_access_visualizer.field_oav_access_snapshot__completed_at
+msgid "Completed At"
+msgstr "Hoàn tất lúc"
+
+#. module: odoo_access_visualizer
+#: model:ir.model.fields.selection,name:odoo_access_visualizer.selection__oav_access_snapshot_edge__edge_type__contains
+msgid "Contains"
+msgstr "Chứa"
+
+#. module: odoo_access_visualizer
+#: model_terms:ir.ui.view,arch_db:odoo_access_visualizer.view_oav_snapshot_form
+msgid "Counts"
+msgstr "Số lượng"
+
+#. module: odoo_access_visualizer
+#: model:ir.model.fields,field_description:odoo_access_visualizer.field_oav_access_finding__create_uid
+#: model:ir.model.fields,field_description:odoo_access_visualizer.field_oav_access_snapshot__create_uid
+#: model:ir.model.fields,field_description:odoo_access_visualizer.field_oav_access_snapshot_edge__create_uid
+#: model:ir.model.fields,field_description:odoo_access_visualizer.field_oav_access_snapshot_node__create_uid
+msgid "Created by"
+msgstr "Tạo bởi"
+
+#. module: odoo_access_visualizer
+#: model:ir.model.fields,field_description:odoo_access_visualizer.field_oav_access_finding__create_date
+#: model:ir.model.fields,field_description:odoo_access_visualizer.field_oav_access_snapshot__create_date
+#: model:ir.model.fields,field_description:odoo_access_visualizer.field_oav_access_snapshot_edge__create_date
+#: model:ir.model.fields,field_description:odoo_access_visualizer.field_oav_access_snapshot_node__create_date
+msgid "Created on"
+msgstr "Tạo lúc"
+
+#. module: odoo_access_visualizer
+#. odoo-javascript
+#: code:addons/odoo_access_visualizer/static/src/xml/access_visualizer.xml:0
+#: model:ir.model.fields.selection,name:odoo_access_visualizer.selection__oav_access_finding__severity__critical
+msgid "Critical"
+msgstr "Nghiêm trọng"
+
+#. module: odoo_access_visualizer
+#. odoo-javascript
+#: code:addons/odoo_access_visualizer/static/src/xml/access_visualizer.xml:0
+msgid ""
+"Critical means structurally strong evidence. Warning means investigate the "
+"context."
+msgstr ""
+"Critical là bằng chứng cấu trúc mạnh. Warning nghĩa là cần kiểm tra thêm ngữ"
+" cảnh."
+
+#. module: odoo_access_visualizer
+#: model:ir.model.fields,field_description:odoo_access_visualizer.field_oav_access_finding__description
+msgid "Description"
+msgstr "Mô tả"
+
+#. module: odoo_access_visualizer
+#: model:ir.model.fields.selection,name:odoo_access_visualizer.selection__oav_access_finding__certainty__deterministic
+msgid "Deterministic"
+msgstr "Xác định"
+
+#. module: odoo_access_visualizer
+#: model:ir.model.fields,field_description:odoo_access_visualizer.field_oav_access_finding__display_name
+#: model:ir.model.fields,field_description:odoo_access_visualizer.field_oav_access_snapshot__display_name
+#: model:ir.model.fields,field_description:odoo_access_visualizer.field_oav_access_snapshot_edge__display_name
+#: model:ir.model.fields,field_description:odoo_access_visualizer.field_oav_access_snapshot_node__display_name
+msgid "Display Name"
+msgstr "Tên hiển thị"
+
+#. module: odoo_access_visualizer
+#: model:ir.model.fields.selection,name:odoo_access_visualizer.selection__oav_access_finding__finding_type__rule_duplicate
+msgid "Duplicate Record Rule"
+msgstr "Record rule trùng"
+
+#. module: odoo_access_visualizer
+#. odoo-javascript
+#: code:addons/odoo_access_visualizer/static/src/xml/access_visualizer.xml:0
+msgid "EVIDENCE QUEUE"
+msgstr "HÀNG ĐỢI BẰNG CHỨNG"
+
+#. module: odoo_access_visualizer
+#: model:ir.model.fields,field_description:odoo_access_visualizer.field_oav_access_snapshot__edge_ids
+msgid "Edge"
+msgstr "Edge"
+
+#. module: odoo_access_visualizer
+#: model:ir.model.fields,field_description:odoo_access_visualizer.field_oav_access_snapshot__edge_count
+msgid "Edge Count"
+msgstr "Số edge"
+
+#. module: odoo_access_visualizer
+#: model:ir.model.fields,field_description:odoo_access_visualizer.field_oav_access_snapshot_edge__edge_type
+msgid "Edge Type"
+msgstr "Loại edge"
+
+#. module: odoo_access_visualizer
+#: model:ir.model.fields,field_description:odoo_access_visualizer.field_oav_access_snapshot__error_message
+msgid "Error Message"
+msgstr "Thông báo lỗi"
+
+#. module: odoo_access_visualizer
+#: model:ir.model.fields,field_description:odoo_access_visualizer.field_oav_access_finding__evidence_json
+msgid "Evidence Json"
+msgstr "JSON bằng chứng"
+
+#. module: odoo_access_visualizer
+#. odoo-javascript
+#: code:addons/odoo_access_visualizer/static/src/xml/access_visualizer.xml:0
+msgid "Explore groups →"
+msgstr "Khám phá group →"
+
+#. module: odoo_access_visualizer
+#. odoo-javascript
+#: code:addons/odoo_access_visualizer/static/src/xml/access_visualizer.xml:0
+msgid "Explore map"
+msgstr "Khám phá bản đồ"
+
+#. module: odoo_access_visualizer
+#. odoo-javascript
+#: code:addons/odoo_access_visualizer/static/src/xml/access_visualizer.xml:0
+msgid "Explore models →"
+msgstr "Khám phá model →"
+
+#. module: odoo_access_visualizer
+#. odoo-javascript
+#: code:addons/odoo_access_visualizer/static/src/xml/access_visualizer.xml:0
+msgid "Explore the permission map"
+msgstr "Khám phá bản đồ phân quyền"
+
+#. module: odoo_access_visualizer
+#. odoo-javascript
+#: code:addons/odoo_access_visualizer/static/src/xml/access_visualizer.xml:0
+msgid "FIRST SIGNALS"
+msgstr "TÍN HIỆU ĐẦU TIÊN"
+
+#. module: odoo_access_visualizer
+#. odoo-javascript
+#: code:addons/odoo_access_visualizer/static/src/xml/access_visualizer.xml:0
+msgid "FOCUSED INVESTIGATION"
+msgstr "ĐIỀU TRA CÓ TRỌNG TÂM"
+
+#. module: odoo_access_visualizer
+#: model:ir.model.fields.selection,name:odoo_access_visualizer.selection__oav_access_snapshot__state__failed
+msgid "Failed"
+msgstr "Thất bại"
+
+#. module: odoo_access_visualizer
+#: model:ir.model.fields,field_description:odoo_access_visualizer.field_oav_access_snapshot__failed_at
+msgid "Failed At"
+msgstr "Thất bại lúc"
+
+#. module: odoo_access_visualizer
+#: model_terms:ir.ui.view,arch_db:odoo_access_visualizer.view_oav_snapshot_form
+msgid "Failure"
+msgstr "Lỗi"
+
+#. module: odoo_access_visualizer
+#: model:ir.model.fields,field_description:odoo_access_visualizer.field_oav_access_snapshot__finding_ids
+msgid "Finding"
+msgstr "Phát hiện"
+
+#. module: odoo_access_visualizer
+#: model:ir.model.fields,field_description:odoo_access_visualizer.field_oav_access_snapshot__finding_count
+msgid "Finding Count"
+msgstr "Số phát hiện"
+
+#. module: odoo_access_visualizer
+#: model:ir.model.fields,field_description:odoo_access_visualizer.field_oav_access_finding__finding_type
+msgid "Finding Type"
+msgstr "Loại phát hiện"
+
+#. module: odoo_access_visualizer
+#. odoo-javascript
+#: code:addons/odoo_access_visualizer/static/src/xml/access_visualizer.xml:0
+msgid "Findings"
+msgstr "Phát hiện"
+
+#. module: odoo_access_visualizer
+#. odoo-javascript
+#: code:addons/odoo_access_visualizer/static/src/xml/access_visualizer.xml:0
+msgid "Findings worth opening"
+msgstr "Các phát hiện nên mở trước"
+
+#. module: odoo_access_visualizer
+#. odoo-javascript
+#: code:addons/odoo_access_visualizer/static/src/xml/access_visualizer.xml:0
+msgid "Findings, ordered for action"
+msgstr "Phát hiện được sắp xếp để xử lý"
+
+#. module: odoo_access_visualizer
+#: model:ir.model.fields,field_description:odoo_access_visualizer.field_oav_access_finding__fingerprint
+msgid "Fingerprint"
+msgstr "Dấu vết định danh"
+
+#. module: odoo_access_visualizer
+#: model:ir.model.fields.selection,name:odoo_access_visualizer.selection__oav_access_snapshot_edge__edge_type__grants
+msgid "Grants Access"
+msgstr "Cấp quyền truy cập"
+
+#. module: odoo_access_visualizer
+#: model:ir.model.fields.selection,name:odoo_access_visualizer.selection__oav_access_finding__certainty__heuristic
+msgid "Heuristic"
+msgstr "Heuristic"
+
+#. module: odoo_access_visualizer
+#. odoo-javascript
+#: code:addons/odoo_access_visualizer/static/src/xml/access_visualizer.xml:0
+msgid "How Odoo access connects"
+msgstr "Các lớp quyền Odoo kết nối như thế nào"
+
+#. module: odoo_access_visualizer
+#: model:ir.model.fields,field_description:odoo_access_visualizer.field_oav_access_finding__id
+#: model:ir.model.fields,field_description:odoo_access_visualizer.field_oav_access_snapshot__id
+#: model:ir.model.fields,field_description:odoo_access_visualizer.field_oav_access_snapshot_edge__id
+#: model:ir.model.fields,field_description:odoo_access_visualizer.field_oav_access_snapshot_node__id
+msgid "ID"
+msgstr "ID"
+
+#. module: odoo_access_visualizer
+#: model:ir.model.fields.selection,name:odoo_access_visualizer.selection__oav_access_snapshot_edge__edge_type__implied
+msgid "Implied Group"
+msgstr "Nhóm được kế thừa"
+
+#. module: odoo_access_visualizer
+#: model:ir.model.fields.selection,name:odoo_access_visualizer.selection__oav_access_finding__finding_type__implied_overlap
+msgid "Implied Group Overlap"
+msgstr "Chồng chéo nhóm được kế thừa"
+
+#. module: odoo_access_visualizer
+#: model:ir.model.fields.selection,name:odoo_access_visualizer.selection__oav_access_finding__severity__info
+msgid "Info"
+msgstr "Thông tin"
+
+#. module: odoo_access_visualizer
+#: model:ir.model.fields,field_description:odoo_access_visualizer.field_oav_access_snapshot_edge__label
+#: model:ir.model.fields,field_description:odoo_access_visualizer.field_oav_access_snapshot_node__label
+msgid "Label"
+msgstr "Nhãn"
+
+#. module: odoo_access_visualizer
+#: model:ir.model.fields,field_description:odoo_access_visualizer.field_oav_access_finding__write_uid
+#: model:ir.model.fields,field_description:odoo_access_visualizer.field_oav_access_snapshot__write_uid
+#: model:ir.model.fields,field_description:odoo_access_visualizer.field_oav_access_snapshot_edge__write_uid
+#: model:ir.model.fields,field_description:odoo_access_visualizer.field_oav_access_snapshot_node__write_uid
+msgid "Last Updated by"
+msgstr "Cập nhật lần cuối bởi"
+
+#. module: odoo_access_visualizer
+#: model:ir.model.fields,field_description:odoo_access_visualizer.field_oav_access_finding__write_date
+#: model:ir.model.fields,field_description:odoo_access_visualizer.field_oav_access_snapshot__write_date
+#: model:ir.model.fields,field_description:odoo_access_visualizer.field_oav_access_snapshot_edge__write_date
+#: model:ir.model.fields,field_description:odoo_access_visualizer.field_oav_access_snapshot_node__write_date
+msgid "Last Updated on"
+msgstr "Cập nhật lần cuối lúc"
+
+#. module: odoo_access_visualizer
+#. odoo-javascript
+#: code:addons/odoo_access_visualizer/static/src/xml/access_visualizer.xml:0
+msgid "Latest snapshot"
+msgstr "Snapshot mới nhất"
+
+#. module: odoo_access_visualizer
+#. odoo-javascript
+#: code:addons/odoo_access_visualizer/static/src/xml/access_visualizer.xml:0
+msgid "Map capped at"
+msgstr "Bản đồ được giới hạn ở"
+
+#. module: odoo_access_visualizer
+#: model:ir.model.fields.selection,name:odoo_access_visualizer.selection__oav_access_snapshot_node__node_type__menu
+msgid "Menu"
+msgstr "Menu"
+
+#. module: odoo_access_visualizer
+#. odoo-javascript
+#: code:addons/odoo_access_visualizer/static/src/xml/access_visualizer.xml:0
+msgid "Menus"
+msgstr "Menu"
+
+#. module: odoo_access_visualizer
+#: model:ir.model.fields,field_description:odoo_access_visualizer.field_oav_access_snapshot_edge__metadata_json
+#: model:ir.model.fields,field_description:odoo_access_visualizer.field_oav_access_snapshot_node__metadata_json
+msgid "Metadata Json"
+msgstr "JSON metadata"
+
+#. module: odoo_access_visualizer
+#: model:ir.model.fields.selection,name:odoo_access_visualizer.selection__oav_access_snapshot_node__node_type__model
+msgid "Model"
+msgstr "Model"
+
+#. module: odoo_access_visualizer
+#: model:ir.model.fields,field_description:odoo_access_visualizer.field_oav_access_finding__model_name
+msgid "Model Name"
+msgstr "Tên model"
+
+#. module: odoo_access_visualizer
+#. odoo-javascript
+#: code:addons/odoo_access_visualizer/static/src/xml/access_visualizer.xml:0
+msgid "Models"
+msgstr "Model"
+
+#. module: odoo_access_visualizer
+#. odoo-javascript
+#: code:addons/odoo_access_visualizer/static/src/xml/access_visualizer.xml:0
+#: model:ir.model.fields,field_description:odoo_access_visualizer.field_oav_access_snapshot_node__module
+msgid "Module"
+msgstr "Module"
+
+#. module: odoo_access_visualizer
+#: model:ir.model.fields.selection,name:odoo_access_visualizer.selection__oav_access_snapshot_node__node_type__category
+msgid "Module Category"
+msgstr "Danh mục module"
+
+#. module: odoo_access_visualizer
+#. odoo-javascript
+#: code:addons/odoo_access_visualizer/static/src/xml/access_visualizer.xml:0
+msgid "NO SNAPSHOT YET"
+msgstr "CHƯA CÓ SNAPSHOT"
+
+#. module: odoo_access_visualizer
+#: model:ir.model.fields,field_description:odoo_access_visualizer.field_oav_access_snapshot__name
+msgid "Name"
+msgstr "Tên"
+
+#. module: odoo_access_visualizer
+#. odoo-javascript
+#: code:addons/odoo_access_visualizer/static/src/xml/access_visualizer.xml:0
+msgid "Needs attention"
+msgstr "Cần xem xét"
+
+#. module: odoo_access_visualizer
+#: model_terms:ir.ui.view,arch_db:odoo_access_visualizer.view_oav_snapshot_form
+msgid "No error"
+msgstr "Không có lỗi"
+
+#. module: odoo_access_visualizer
+#. odoo-javascript
+#: code:addons/odoo_access_visualizer/static/src/xml/access_visualizer.xml:0
+msgid "No findings in this snapshot."
+msgstr "Không có phát hiện trong snapshot này."
+
+#. module: odoo_access_visualizer
+#: model:ir.model.fields,field_description:odoo_access_visualizer.field_oav_access_snapshot__node_ids
+msgid "Node"
+msgstr "Node"
+
+#. module: odoo_access_visualizer
+#: model:ir.model.fields,field_description:odoo_access_visualizer.field_oav_access_snapshot__node_count
+msgid "Node Count"
+msgstr "Số node"
+
+#. module: odoo_access_visualizer
+#: model:ir.model.fields,field_description:odoo_access_visualizer.field_oav_access_snapshot_node__node_key
+msgid "Node Key"
+msgstr "Khóa node"
+
+#. module: odoo_access_visualizer
+#: model:ir.model.fields,field_description:odoo_access_visualizer.field_oav_access_snapshot_node__node_type
+msgid "Node Type"
+msgstr "Loại node"
+
+#. module: odoo_access_visualizer
+#: model:ir.model,name:odoo_access_visualizer.model_oav_access_snapshot
+msgid "Odoo Access Visualizer Snapshot"
+msgstr "Snapshot Trực quan hóa phân quyền Odoo"
+
+#. module: odoo_access_visualizer
+#. odoo-python
+#: code:addons/odoo_access_visualizer/models/access_snapshot.py:0
+msgid "Only Settings administrators can use Access Visualizer."
+msgstr "Chỉ quản trị viên Cài đặt mới được sử dụng Trực quan hóa phân quyền."
+
+#. module: odoo_access_visualizer
+#. odoo-python
+#: code:addons/odoo_access_visualizer/models/access_snapshot.py:0
+msgid "Only a completed snapshot can be inspected."
+msgstr "Chỉ có thể xem snapshot đã hoàn tất."
+
+#. module: odoo_access_visualizer
+#. odoo-javascript
+#: code:addons/odoo_access_visualizer/static/src/xml/access_visualizer.xml:0
+msgid "Open findings →"
+msgstr "Mở danh sách phát hiện →"
+
+#. module: odoo_access_visualizer
+#. odoo-javascript
+#: code:addons/odoo_access_visualizer/static/src/xml/access_visualizer.xml:0
+msgid "Overview"
+msgstr "Tổng quan"
+
+#. module: odoo_access_visualizer
+#. odoo-javascript
+#: code:addons/odoo_access_visualizer/static/src/xml/access_visualizer.xml:0
+msgid ""
+"Pick one layer or search for a specific object. The map stays focused on "
+"what you asked."
+msgstr ""
+"Chọn một lớp hoặc tìm object cụ thể. Bản đồ chỉ hiển thị đúng phạm vi bạn "
+"yêu cầu."
+
+#. module: odoo_access_visualizer
+#: model:ir.model.fields.selection,name:odoo_access_visualizer.selection__oav_access_finding__finding_type__rule_potential_conflict
+msgid "Potential Record Rule Conflict"
+msgstr "Record rule có khả năng mâu thuẫn"
+
+#. module: odoo_access_visualizer
+#. odoo-javascript
+#: code:addons/odoo_access_visualizer/static/src/xml/access_visualizer.xml:0
+msgid "Preparing your security map…"
+msgstr "Đang chuẩn bị bản đồ phân quyền…"
+
+#. module: odoo_access_visualizer
+#: model:ir.model.fields.selection,name:odoo_access_visualizer.selection__oav_access_snapshot_node__node_type__privilege
+msgid "Privilege"
+msgstr "Privilege"
+
+#. module: odoo_access_visualizer
+#: model:ir.model.fields.selection,name:odoo_access_visualizer.selection__oav_access_snapshot_edge__edge_type__protects
+msgid "Protects Model"
+msgstr "Bảo vệ model"
+
+#. module: odoo_access_visualizer
+#: model:ir.model.fields.selection,name:odoo_access_visualizer.selection__oav_access_snapshot__state__queued
+msgid "Queued"
+msgstr "Đang chờ"
+
+#. module: odoo_access_visualizer
+#. odoo-javascript
+#: code:addons/odoo_access_visualizer/static/src/xml/access_visualizer.xml:0
+msgid "RELATIONSHIP MAP"
+msgstr "BẢN ĐỒ QUAN HỆ"
+
+#. module: odoo_access_visualizer
+#: model:ir.model.fields,field_description:odoo_access_visualizer.field_oav_access_finding__recommendation
+msgid "Recommendation"
+msgstr "Khuyến nghị"
+
+#. module: odoo_access_visualizer
+#: model:ir.model.fields.selection,name:odoo_access_visualizer.selection__oav_access_snapshot_node__node_type__rule
+msgid "Record Rule"
+msgstr "Record rule"
+
+#. module: odoo_access_visualizer
+#. odoo-javascript
+#: code:addons/odoo_access_visualizer/static/src/xml/access_visualizer.xml:0
+msgid "Record rules"
+msgstr "Record rule"
+
+#. module: odoo_access_visualizer
+#. odoo-javascript
+#: code:addons/odoo_access_visualizer/static/src/xml/access_visualizer.xml:0
+msgid "Relationships"
+msgstr "Quan hệ"
+
+#. module: odoo_access_visualizer
+#: model:ir.model.fields,field_description:odoo_access_visualizer.field_oav_access_snapshot__requested_at
+msgid "Requested At"
+msgstr "Yêu cầu lúc"
+
+#. module: odoo_access_visualizer
+#: model:ir.model.fields,field_description:odoo_access_visualizer.field_oav_access_snapshot__requested_by
+msgid "Requested By"
+msgstr "Yêu cầu bởi"
+
+#. module: odoo_access_visualizer
+#. odoo-javascript
+#: code:addons/odoo_access_visualizer/static/src/xml/access_visualizer.xml:0
+msgid "Reset"
+msgstr "Đặt lại"
+
+#. module: odoo_access_visualizer
+#: model:ir.model.fields,field_description:odoo_access_visualizer.field_oav_access_snapshot__retention_count
+msgid "Retention Count"
+msgstr "Số snapshot lưu giữ"
+
+#. module: odoo_access_visualizer
+#. odoo-javascript
+#: code:addons/odoo_access_visualizer/static/src/xml/access_visualizer.xml:0
+msgid "Review the highest-signal findings first."
+msgstr "Xem trước các phát hiện có tín hiệu mạnh nhất."
+
+#. module: odoo_access_visualizer
+#. odoo-javascript
+#: code:addons/odoo_access_visualizer/static/src/xml/access_visualizer.xml:0
+msgid "Run first scan"
+msgstr "Chạy lần quét đầu tiên"
+
+#. module: odoo_access_visualizer
+#. odoo-javascript
+#: code:addons/odoo_access_visualizer/static/src/xml/access_visualizer.xml:0
+msgid "Run rescan"
+msgstr "Quét lại"
+
+#. module: odoo_access_visualizer
+#: model:ir.model.fields.selection,name:odoo_access_visualizer.selection__oav_access_snapshot__state__running
+msgid "Running"
+msgstr "Đang chạy"
+
+#. module: odoo_access_visualizer
+#. odoo-javascript
+#: code:addons/odoo_access_visualizer/static/src/xml/access_visualizer.xml:0
+msgid "SECURITY CONTROL ROOM · ODOO 19"
+msgstr "TRUNG TÂM ĐIỀU HÀNH BẢO MẬT · ODOO 19"
+
+#. module: odoo_access_visualizer
+#. odoo-javascript
+#: code:addons/odoo_access_visualizer/static/src/xml/access_visualizer.xml:0
+msgid "SELECTED OBJECT"
+msgstr "OBJECT ĐƯỢC CHỌN"
+
+#. module: odoo_access_visualizer
+#: model:ir.model.fields,field_description:odoo_access_visualizer.field_oav_access_snapshot__scan_duration_seconds
+msgid "Scan Duration Seconds"
+msgstr "Thời lượng quét (giây)"
+
+#. module: odoo_access_visualizer
+#: model:ir.ui.menu,name:odoo_access_visualizer.menu_oav_snapshots
+msgid "Scan Snapshots"
+msgstr "Snapshot lần quét"
+
+#. module: odoo_access_visualizer
+#: model:ir.model.fields,field_description:odoo_access_visualizer.field_oav_access_snapshot__scan_version
+msgid "Scan Version"
+msgstr "Phiên bản scanner"
+
+#. module: odoo_access_visualizer
+#. odoo-javascript
+#: code:addons/odoo_access_visualizer/static/src/xml/access_visualizer.xml:0
+msgid "Scroll to zoom · drag to pan · select a node"
+msgstr "Cuộn để phóng to · kéo để di chuyển · chọn một node"
+
+#. module: odoo_access_visualizer
+#: model:ir.model.fields,field_description:odoo_access_visualizer.field_oav_access_snapshot_node__search_text
+msgid "Search Text"
+msgstr "Nội dung tìm kiếm"
+
+#. module: odoo_access_visualizer
+#. odoo-javascript
+#: code:addons/odoo_access_visualizer/static/src/xml/access_visualizer.xml:0
+msgid "Search a name or technical key…"
+msgstr "Tìm tên hoặc technical key…"
+
+#. module: odoo_access_visualizer
+#: model:ir.model.fields.selection,name:odoo_access_visualizer.selection__oav_access_snapshot_node__node_type__group
+msgid "Security Group"
+msgstr "Nhóm bảo mật"
+
+#. module: odoo_access_visualizer
+#: model:ir.ui.menu,name:odoo_access_visualizer.menu_oav_visualizer
+msgid "Security Map"
+msgstr "Bản đồ bảo mật"
+
+#. module: odoo_access_visualizer
+#. odoo-javascript
+#: code:addons/odoo_access_visualizer/static/src/xml/access_visualizer.xml:0
+msgid "Security groups"
+msgstr "Nhóm bảo mật"
+
+#. module: odoo_access_visualizer
+#. odoo-python
+#: code:addons/odoo_access_visualizer/models/access_snapshot.py:0
+msgid "Security scan %s"
+msgstr "Quét bảo mật %s"
+
+#. module: odoo_access_visualizer
+#. odoo-javascript
+#: code:addons/odoo_access_visualizer/static/src/js/access_visualizer_action.js:0
+msgid "Security scan queued."
+msgstr "Đã đưa lần quét bảo mật vào hàng đợi."
+
+#. module: odoo_access_visualizer
+#: model:ir.model.fields,field_description:odoo_access_visualizer.field_oav_access_finding__severity
+msgid "Severity"
+msgstr "Mức độ"
+
+#. module: odoo_access_visualizer
+#. odoo-javascript
+#: code:addons/odoo_access_visualizer/static/src/xml/access_visualizer.xml:0
+msgid "Show map"
+msgstr "Hiển thị bản đồ"
+
+#. module: odoo_access_visualizer
+#: model:ir.model.fields.selection,name:odoo_access_visualizer.selection__oav_access_snapshot_edge__edge_type__shows
+msgid "Shows Menu"
+msgstr "Hiển thị menu"
+
+#. module: odoo_access_visualizer
+#: model:ir.model.fields,field_description:odoo_access_visualizer.field_oav_access_finding__snapshot_id
+#: model:ir.model.fields,field_description:odoo_access_visualizer.field_oav_access_snapshot_edge__snapshot_id
+#: model:ir.model.fields,field_description:odoo_access_visualizer.field_oav_access_snapshot_node__snapshot_id
+msgid "Snapshot"
+msgstr "Snapshot"
+
+#. module: odoo_access_visualizer
+#. odoo-javascript
+#: code:addons/odoo_access_visualizer/static/src/xml/access_visualizer.xml:0
+msgid "Snapshot ready for investigation."
+msgstr "Snapshot đã sẵn sàng để điều tra."
+
+#. module: odoo_access_visualizer
+#: model:ir.model.constraint,message:odoo_access_visualizer.constraint_oav_access_snapshot_retention_check
+msgid "Snapshot retention must stay between 5 and 10."
+msgstr "Số snapshot lưu giữ phải từ 5 đến 10."
+
+#. module: odoo_access_visualizer
+#. odoo-javascript
+#: code:addons/odoo_access_visualizer/static/src/xml/access_visualizer.xml:0
+msgid "Something needs attention."
+msgstr "Có nội dung cần xem xét."
+
+#. module: odoo_access_visualizer
+#. odoo-javascript
+#: code:addons/odoo_access_visualizer/static/src/xml/access_visualizer.xml:0
+#: model:ir.model.fields,field_description:odoo_access_visualizer.field_oav_access_snapshot_node__source_id
+msgid "Source"
+msgstr "Nguồn"
+
+#. module: odoo_access_visualizer
+#: model:ir.model.fields,field_description:odoo_access_visualizer.field_oav_access_snapshot_edge__source_key
+msgid "Source Key"
+msgstr "Khóa nguồn"
+
+#. module: odoo_access_visualizer
+#: model:ir.model.fields,field_description:odoo_access_visualizer.field_oav_access_snapshot_node__source_model
+msgid "Source Model"
+msgstr "Model nguồn"
+
+#. module: odoo_access_visualizer
+#. odoo-javascript
+#: code:addons/odoo_access_visualizer/static/src/xml/access_visualizer.xml:0
+msgid "Start from a model and inspect its path."
+msgstr "Bắt đầu từ một model và xem đường dẫn quyền."
+
+#. module: odoo_access_visualizer
+#. odoo-javascript
+#: code:addons/odoo_access_visualizer/static/src/xml/access_visualizer.xml:0
+msgid "Start with a read-only scan"
+msgstr "Bắt đầu bằng lần quét chỉ đọc"
+
+#. module: odoo_access_visualizer
+#: model:ir.model.fields,field_description:odoo_access_visualizer.field_oav_access_snapshot__started_at
+msgid "Started At"
+msgstr "Bắt đầu lúc"
+
+#. module: odoo_access_visualizer
+#: model:ir.model.fields,field_description:odoo_access_visualizer.field_oav_access_snapshot__state
+msgid "State"
+msgstr "Trạng thái"
+
+#. module: odoo_access_visualizer
+#. odoo-javascript
+#: code:addons/odoo_access_visualizer/static/src/xml/access_visualizer.xml:0
+msgid "THE PERMISSION PATH"
+msgstr "ĐƯỜNG DẪN PHÂN QUYỀN"
+
+#. module: odoo_access_visualizer
+#: model:ir.model.fields,field_description:odoo_access_visualizer.field_oav_access_snapshot_edge__target_key
+msgid "Target Key"
+msgstr "Khóa đích"
+
+#. module: odoo_access_visualizer
+#: model:ir.model.fields,field_description:odoo_access_visualizer.field_oav_access_snapshot_node__technical_name
+msgid "Technical Name"
+msgstr "Tên kỹ thuật"
+
+#. module: odoo_access_visualizer
+#. odoo-javascript
+#: code:addons/odoo_access_visualizer/static/src/xml/access_visualizer.xml:0
+msgid "The full system is intentionally not shown at once"
+msgstr "Toàn bộ hệ thống không được hiển thị cùng lúc"
+
+#. module: odoo_access_visualizer
+#. odoo-python
+#: code:addons/odoo_access_visualizer/models/access_snapshot.py:0
+msgid "The requested snapshot no longer exists."
+msgstr "Snapshot được yêu cầu không còn tồn tại."
+
+#. module: odoo_access_visualizer
+#. odoo-javascript
+#: code:addons/odoo_access_visualizer/static/src/xml/access_visualizer.xml:0
+msgid "Three useful questions"
+msgstr "Ba câu hỏi hữu ích"
+
+#. module: odoo_access_visualizer
+#: model:ir.model.fields,field_description:odoo_access_visualizer.field_oav_access_finding__title
+msgid "Title"
+msgstr "Tiêu đề"
+
+#. module: odoo_access_visualizer
+#. odoo-javascript
+#: code:addons/odoo_access_visualizer/static/src/xml/access_visualizer.xml:0
+msgid "Trace users, groups and implied roles."
+msgstr "Truy vết user, group và vai trò được kế thừa."
+
+#. module: odoo_access_visualizer
+#. odoo-javascript
+#: code:addons/odoo_access_visualizer/static/src/js/access_visualizer_action.js:0
+msgid "Unable to load Access Visualizer."
+msgstr "Không thể tải Trực quan hóa phân quyền."
+
+#. module: odoo_access_visualizer
+#. odoo-javascript
+#: code:addons/odoo_access_visualizer/static/src/js/access_visualizer_action.js:0
+msgid "Unable to load node details."
+msgstr "Không thể tải chi tiết node."
+
+#. module: odoo_access_visualizer
+#. odoo-javascript
+#: code:addons/odoo_access_visualizer/static/src/js/access_visualizer_action.js:0
+msgid "Unable to queue a scan."
+msgstr "Không thể đưa lần quét vào hàng đợi."
+
+#. module: odoo_access_visualizer
+#. odoo-javascript
+#: code:addons/odoo_access_visualizer/static/src/xml/access_visualizer.xml:0
+msgid "Understand who can do what — and why."
+msgstr "Hiểu ai có thể làm gì — và vì sao."
+
+#. module: odoo_access_visualizer
+#: model:ir.model.fields.selection,name:odoo_access_visualizer.selection__oav_access_finding__certainty__unknown
+msgid "Unknown"
+msgstr "Chưa xác định"
+
+#. module: odoo_access_visualizer
+#: model:ir.model.fields.selection,name:odoo_access_visualizer.selection__oav_access_snapshot_node__node_type__user
+msgid "User"
+msgstr "User"
+
+#. module: odoo_access_visualizer
+#: model:ir.model.fields.selection,name:odoo_access_visualizer.selection__oav_access_snapshot_edge__edge_type__membership
+msgid "User Membership"
+msgstr "Quan hệ user thuộc nhóm"
+
+#. module: odoo_access_visualizer
+#. odoo-javascript
+#: code:addons/odoo_access_visualizer/static/src/xml/access_visualizer.xml:0
+msgid "Users"
+msgstr "User"
+
+#. module: odoo_access_visualizer
+#. odoo-javascript
+#: code:addons/odoo_access_visualizer/static/src/xml/access_visualizer.xml:0
+msgid "View all →"
+msgstr "Xem tất cả →"
+
+#. module: odoo_access_visualizer
+#. odoo-javascript
+#: code:addons/odoo_access_visualizer/static/src/xml/access_visualizer.xml:0
+msgid "Visualizer sections"
+msgstr "Các khu vực trực quan hóa"
+
+#. module: odoo_access_visualizer
+#. odoo-javascript
+#: code:addons/odoo_access_visualizer/static/src/xml/access_visualizer.xml:0
+msgid "WHERE TO START"
+msgstr "BẮT ĐẦU TỪ ĐÂU"
+
+#. module: odoo_access_visualizer
+#: model:ir.model.fields.selection,name:odoo_access_visualizer.selection__oav_access_finding__severity__warning
+msgid "Warning"
+msgstr "Cảnh báo"
+
+#. module: odoo_access_visualizer
+#. odoo-javascript
+#: code:addons/odoo_access_visualizer/static/src/xml/access_visualizer.xml:0
+msgid ""
+"We will map the security structure without changing a single access rule."
+msgstr ""
+"Module sẽ lập bản đồ cấu trúc bảo mật mà không thay đổi bất kỳ rule phân "
+"quyền nào."
+
+#. module: odoo_access_visualizer
+#. odoo-javascript
+#: code:addons/odoo_access_visualizer/static/src/xml/access_visualizer.xml:0
+msgid "What looks risky?"
+msgstr "Điều gì có vẻ rủi ro?"
+
+#. module: odoo_access_visualizer
+#. odoo-javascript
+#: code:addons/odoo_access_visualizer/static/src/xml/access_visualizer.xml:0
+msgid "Who can touch a model?"
+msgstr "Ai có thể tác động vào model?"
+
+#. module: odoo_access_visualizer
+#. odoo-javascript
+#: code:addons/odoo_access_visualizer/static/src/xml/access_visualizer.xml:0
+msgid "Who inherits access?"
+msgstr "Ai đang kế thừa quyền?"
+
+#. module: odoo_access_visualizer
+#. odoo-javascript
+#: code:addons/odoo_access_visualizer/static/src/xml/access_visualizer.xml:0
+msgid "Why this object matters"
+msgstr "Vì sao object này quan trọng"
+
+#. module: odoo_access_visualizer
+#. odoo-javascript
+#: code:addons/odoo_access_visualizer/static/src/xml/access_visualizer.xml:0
+msgid "deterministic priority signals"
+msgstr "tín hiệu ưu tiên có bằng chứng xác định"
+
+#. module: odoo_access_visualizer
+#. odoo-javascript
+#: code:addons/odoo_access_visualizer/static/src/xml/access_visualizer.xml:0
+msgid "evidence-backed findings"
+msgstr "phát hiện có bằng chứng"
+
+#. module: odoo_access_visualizer
+#. odoo-javascript
+#: code:addons/odoo_access_visualizer/static/src/xml/access_visualizer.xml:0
+msgid "nodes. Narrow the search for a complete view."
+msgstr "node. Thu hẹp tìm kiếm để xem đầy đủ."
+
+#. module: odoo_access_visualizer
+#. odoo-javascript
+#: code:addons/odoo_access_visualizer/static/src/xml/access_visualizer.xml:0
+msgid "objects in focus"
+msgstr "object trong phạm vi"
+
+#. module: odoo_access_visualizer
+#. odoo-javascript
+#: code:addons/odoo_access_visualizer/static/src/xml/access_visualizer.xml:0
+msgid "permission paths captured"
+msgstr "đường dẫn phân quyền đã ghi nhận"
+
+#. module: odoo_access_visualizer
+#. odoo-javascript
+#: code:addons/odoo_access_visualizer/static/src/xml/access_visualizer.xml:0
+msgid "security objects mapped"
+msgstr "object bảo mật đã lập bản đồ"
