@@ -161,7 +161,33 @@ class AccessGraphQuery:
             ],
             limit=200,
         )
-        return {"node": self._node_payload(node), "edges": [self._edge_payload(edge) for edge in edges]}
+        related_keys = set()
+        for edge in edges:
+            related_keys.add(edge.target_key if edge.source_key == node_key else edge.source_key)
+        related_nodes = Node.search(
+            [("snapshot_id", "=", snapshot.id), ("node_key", "in", list(related_keys))]
+        )
+        related_by_key = {related.node_key: related for related in related_nodes}
+        relationships = []
+        for edge in edges:
+            related_key = edge.target_key if edge.source_key == node_key else edge.source_key
+            related = related_by_key.get(related_key)
+            if not related:
+                continue
+            relationships.append(
+                {
+                    "edge_type": edge.edge_type,
+                    "direction": "out" if edge.source_key == node_key else "in",
+                    "node": self._node_payload(related),
+                    "metadata": edge.metadata_json or {},
+                }
+            )
+        relationships.sort(key=lambda item: (item["edge_type"], item["node"]["label"]))
+        return {
+            "node": self._node_payload(node),
+            "edges": [self._edge_payload(edge) for edge in edges],
+            "relationships": relationships,
+        }
 
     def get_findings(self, snapshot, filters):
         Finding = self.env["oav.access.finding"].sudo()

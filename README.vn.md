@@ -40,6 +40,8 @@ lúc.
 - Chọn Users, Security groups, Models, Access controls, Record rules hoặc Menus.
 - Tìm theo tên hiển thị, technical name hoặc module.
 - Chọn node để xem source record, module và metadata.
+- Panel bằng chứng liệt kê ACL, rule, group, model và menu liên quan đến node
+  đang chọn; các quyền CRUD được hiển thị khi dữ liệu có sẵn.
 - Graph nhỏ dùng Cytoscape.js; graph lớn dùng SVG fallback an toàn.
 - Response graph giới hạn 250 node và 1.500 edge.
 - Map có trọng tâm mở rộng tối đa ba hop phân quyền để việc chọn model hoặc
