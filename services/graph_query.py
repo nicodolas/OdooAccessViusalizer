@@ -1,6 +1,7 @@
 class AccessGraphQuery:
     NODE_LIMIT = 250
     EDGE_LIMIT = 1500
+    SEED_LIMIT = 50
 
     NODE_LABELS = {
         "category": "Module categories",
@@ -85,15 +86,16 @@ class AccessGraphQuery:
                 "render_limits": {"nodes": self.NODE_LIMIT, "edges": self.EDGE_LIMIT},
             }
 
-        seed_nodes = Node.search(domain, order="node_type, label, id", limit=self.NODE_LIMIT + 1)
+        seed_limit = min(self.NODE_LIMIT, self.SEED_LIMIT)
+        seed_nodes = Node.search(domain, order="node_type, label, id", limit=seed_limit + 1)
         seed_count = total_nodes
-        budget_exceeded = seed_count > self.NODE_LIMIT
-        ordered_keys = list(seed_nodes[: self.NODE_LIMIT].mapped("node_key"))
+        budget_exceeded = seed_count > seed_limit
+        ordered_keys = list(seed_nodes[:seed_limit].mapped("node_key"))
         known_keys = set(ordered_keys)
 
-        # Expand the selected layer by two hops so a group/model selection
+        # Expand the selected layer by three hops so a group/model selection
         # becomes an actual permission story instead of an isolated node list.
-        for _hop in range(2):
+        for _hop in range(3):
             if not ordered_keys:
                 break
             neighborhood_edges = Edge.search(
