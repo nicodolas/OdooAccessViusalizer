@@ -1,4 +1,4 @@
-import { Component, onMounted, onWillStart, onWillUnmount, useRef, useState } from "@odoo/owl";
+import { Component, onPatched, onWillStart, onWillUnmount, useRef, useState } from "@odoo/owl";
 import { registry } from "@web/core/registry";
 import { useService } from "@web/core/utils/hooks";
 
@@ -17,16 +17,22 @@ export class AccessVisualizerAction extends Component {
             loading: true,
             error: null,
             dashboard: null,
-            graph: { nodes: [], edges: [] },
+            graph: { nodes: [], edges: [], needs_focus: false },
             findings: [],
             selectedNode: null,
-            filters: { search: "", module: "", node_types: [] },
+            activeTab: "overview",
+            filters: {
+                search: "",
+                module: "",
+                node_types: [],
+                explore: false,
+            },
         });
         this.pollTimer = null;
         this.renderer = null;
+        this.renderedGraphKey = null;
         onWillStart(() => this.reload());
-        onMounted(() => {
-            this.renderer = new AccessGraphRenderer(this.graphRef.el, (key) => this.selectNode(key));
+        onPatched(() => {
             this.renderGraph();
             this.startPollingIfNeeded();
         });
@@ -41,9 +47,11 @@ export class AccessVisualizerAction extends Component {
         this.state.error = null;
         try {
             this.state.dashboard = await this.api.dashboard(this.state.filters);
-            this.state.graph = this.state.dashboard.graph || { nodes: [], edges: [] };
+            this.state.graph = this.state.dashboard.graph || { nodes: [], edges: [], needs_focus: false };
             const latest = this.state.dashboard.latest;
-            this.state.findings = latest ? await this.api.findings(latest.id) : [];
+            this.state.findings = latest
+                ? (this.state.dashboard.overview?.top_findings || await this.api.findings(latest.id))
+                : [];
         } catch (error) {
             this.state.error = error.message || "Unable to load Access Visualizer.";
         } finally {
@@ -54,9 +62,67 @@ export class AccessVisualizerAction extends Component {
     }
 
     renderGraph() {
-        if (this.renderer && !this.state.loading) {
+        if (!this.graphRef.el) {
+            if (this.renderer) {
+                this.renderer.destroy();
+                this.renderer = null;
+                this.renderedGraphKey = null;
+            }
+            return;
+        }
+        if (this.state.loading) {
+            return;
+        }
+        if (!this.renderer) {
+            this.renderer = new AccessGraphRenderer(this.graphRef.el, (key) => this.selectNode(key));
+        }
+        const graphKey = JSON.stringify({
+            needsFocus: this.state.graph.needs_focus,
+            nodes: this.state.graph.nodes.map((node) => node.id),
+            edges: this.state.graph.edges.map((edge) => edge.id),
+        });
+        if (graphKey !== this.renderedGraphKey) {
+            this.renderedGraphKey = graphKey;
             this.renderer.render(this.state.graph);
         }
+    }
+
+    setTab(event) {
+        const tab = event.currentTarget.dataset.tab;
+        this.state.activeTab = tab;
+        if (tab === "findings" && this.state.dashboard?.latest) {
+            this.api.findings(this.state.dashboard.latest.id, { limit: 500 })
+                .then((findings) => { this.state.findings = findings; })
+                .catch((error) => { this.state.error = error.message; });
+        }
+    }
+
+    chooseLayer(event) {
+        const nodeType = event.target.value;
+        this.state.filters.node_types = nodeType ? [nodeType] : [];
+        this.state.filters.explore = Boolean(nodeType || this.state.filters.search);
+    }
+
+    async applyGraphFilters() {
+        this.state.filters.explore = Boolean(
+            this.state.filters.search || this.state.filters.node_types.length
+        );
+        await this.reload();
+    }
+
+    async openGraphLayer(event) {
+        this.state.activeTab = "graph";
+        this.state.filters.node_types = [event.currentTarget.dataset.layer];
+        this.state.filters.explore = true;
+        await this.reload();
+    }
+
+    async clearGraphFilters() {
+        this.state.filters.search = "";
+        this.state.filters.module = "";
+        this.state.filters.node_types = [];
+        this.state.filters.explore = false;
+        await this.reload();
     }
 
     async enqueueScan() {
@@ -69,10 +135,6 @@ export class AccessVisualizerAction extends Component {
         }
     }
 
-    async applyFilters() {
-        await this.reload();
-    }
-
     async selectNode(nodeKey) {
         const latest = this.state.dashboard?.latest;
         if (!latest) {
@@ -83,6 +145,19 @@ export class AccessVisualizerAction extends Component {
         } catch (error) {
             this.state.error = error.message || "Unable to load node details.";
         }
+    }
+
+    async focusFinding(event) {
+        const findingId = Number(event.currentTarget.dataset.findingId);
+        const finding = this.state.findings.find((item) => item.id === findingId);
+        if (!finding) {
+            return;
+        }
+        this.state.activeTab = "graph";
+        this.state.filters.search = finding.model_name || "";
+        this.state.filters.node_types = finding.model_name ? ["model"] : [];
+        this.state.filters.explore = true;
+        await this.reload();
     }
 
     formatJson(value) {

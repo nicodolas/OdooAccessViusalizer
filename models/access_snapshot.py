@@ -186,16 +186,24 @@ class AccessSnapshot(models.Model):
         active = self.search(
             [("state", "in", ["queued", "running"])], order="id desc", limit=1
         )
-        graph = AccessGraphQuery(self.env).get_graph(latest, filters or {}) if latest else {
+        graph_query = AccessGraphQuery(self.env)
+        graph = graph_query.get_graph(latest, filters or {}) if latest else {
             "nodes": [],
             "edges": [],
             "budget_exceeded": False,
+            "needs_focus": False,
             "total_nodes": 0,
             "total_edges": 0,
         }
         return {
             "latest": latest._status_payload() if latest else None,
             "active": active._status_payload() if active else None,
+            "overview": graph_query.get_overview(latest) if latest else {
+                "layers": [],
+                "severity_counts": {},
+                "finding_type_counts": [],
+                "top_findings": [],
+            },
             "graph": graph,
         }
 
@@ -222,4 +230,3 @@ class AccessSnapshot(models.Model):
         if not snapshot or snapshot.state != "completed":
             return []
         return AccessGraphQuery(self.env).get_findings(snapshot, filters or {})
-

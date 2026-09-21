@@ -1,6 +1,25 @@
 class AccessGraphQuery:
-    NODE_LIMIT = 2000
-    EDGE_LIMIT = 10000
+    NODE_LIMIT = 250
+    EDGE_LIMIT = 1500
+
+    NODE_LABELS = {
+        "category": "Module categories",
+        "privilege": "Privileges",
+        "user": "Users",
+        "group": "Security groups",
+        "model": "Models",
+        "acl": "Access controls",
+        "rule": "Record rules",
+        "menu": "Menus",
+    }
+
+    FINDING_LABELS = {
+        "implied_overlap": "Implied group overlap",
+        "acl_redundancy": "ACL redundancy",
+        "acl_complexity": "ACL complexity",
+        "rule_duplicate": "Duplicate record rule",
+        "rule_potential_conflict": "Potential rule interaction",
+    }
 
     def __init__(self, env):
         self.env = env
@@ -33,7 +52,14 @@ class AccessGraphQuery:
 
     def get_graph(self, snapshot, filters):
         if not snapshot:
-            return {"nodes": [], "edges": [], "budget_exceeded": False, "total_nodes": 0, "total_edges": 0}
+            return {
+                "nodes": [],
+                "edges": [],
+                "budget_exceeded": False,
+                "needs_focus": False,
+                "total_nodes": 0,
+                "total_edges": 0,
+            }
         Node = self.env["oav.access.snapshot.node"].sudo()
         Edge = self.env["oav.access.snapshot.edge"].sudo()
         domain = [("snapshot_id", "=", snapshot.id)]
@@ -47,6 +73,18 @@ class AccessGraphQuery:
             domain.append(("module", "=", filters["module"]))
 
         total_nodes = Node.search_count(domain)
+        total_edges = Edge.search_count([("snapshot_id", "=", snapshot.id)])
+        if not filters.get("explore"):
+            return {
+                "nodes": [],
+                "edges": [],
+                "budget_exceeded": total_nodes > self.NODE_LIMIT,
+                "needs_focus": bool(total_nodes),
+                "total_nodes": total_nodes,
+                "total_edges": total_edges,
+                "render_limits": {"nodes": self.NODE_LIMIT, "edges": self.EDGE_LIMIT},
+            }
+
         nodes = Node.search(domain, order="node_type, label, id", limit=self.NODE_LIMIT + 1)
         budget_exceeded = len(nodes) > self.NODE_LIMIT
         if budget_exceeded:
@@ -57,7 +95,6 @@ class AccessGraphQuery:
             edge_domain.extend([("source_key", "in", keys), ("target_key", "in", keys)])
         else:
             edge_domain.append(("id", "=", 0))
-        total_edges = Edge.search_count(edge_domain)
         edges = Edge.search(edge_domain, order="edge_type, id", limit=self.EDGE_LIMIT + 1)
         if len(edges) > self.EDGE_LIMIT:
             budget_exceeded = True
@@ -66,6 +103,7 @@ class AccessGraphQuery:
             "nodes": [self._node_payload(node) for node in nodes],
             "edges": [self._edge_payload(edge) for edge in edges],
             "budget_exceeded": budget_exceeded,
+            "needs_focus": False,
             "total_nodes": total_nodes,
             "total_edges": total_edges,
             "render_limits": {"nodes": self.NODE_LIMIT, "edges": self.EDGE_LIMIT},
@@ -95,7 +133,8 @@ class AccessGraphQuery:
             domain.append(("severity", "=", filters["severity"]))
         if filters.get("finding_type"):
             domain.append(("finding_type", "=", filters["finding_type"]))
-        findings = Finding.search(domain, order="severity desc, certainty, id", limit=500)
+        limit = min(int(filters.get("limit", 500)), 500)
+        findings = Finding.search(domain, order="severity desc, certainty, id", limit=limit)
         return [
             {
                 "id": finding.id,
@@ -113,3 +152,59 @@ class AccessGraphQuery:
             for finding in findings
         ]
 
+    def get_overview(self, snapshot):
+        if not snapshot:
+            return {
+                "layers": [],
+                "severity_counts": {},
+                "finding_type_counts": [],
+                "top_findings": [],
+            }
+        Node = self.env["oav.access.snapshot.node"].sudo()
+        Finding = self.env["oav.access.finding"].sudo()
+        layer_rows = Node.read_group(
+            [("snapshot_id", "=", snapshot.id)],
+            ["node_type"],
+            ["node_type"],
+        )
+        layer_counts = {
+            row["node_type"]: row["node_type_count"]
+            for row in layer_rows
+            if row.get("node_type")
+        }
+        layers = [
+            {"type": node_type, "label": label, "count": layer_counts.get(node_type, 0)}
+            for node_type, label in self.NODE_LABELS.items()
+        ]
+        severity_rows = Finding.read_group(
+            [("snapshot_id", "=", snapshot.id)],
+            ["severity"],
+            ["severity"],
+        )
+        severity_counts = {
+            row["severity"]: row["severity_count"]
+            for row in severity_rows
+            if row.get("severity")
+        }
+        type_rows = Finding.read_group(
+            [("snapshot_id", "=", snapshot.id)],
+            ["finding_type"],
+            ["finding_type"],
+        )
+        finding_type_counts = [
+            {
+                "type": row["finding_type"],
+                "label": self.FINDING_LABELS.get(row["finding_type"], row["finding_type"]),
+                "count": row["finding_type_count"],
+            }
+            for row in type_rows
+            if row.get("finding_type")
+        ]
+        return {
+            "layers": layers,
+            "severity_counts": severity_counts,
+            "finding_type_counts": sorted(
+                finding_type_counts, key=lambda row: row["count"], reverse=True
+            ),
+            "top_findings": self.get_findings(snapshot, {"limit": 5}),
+        }

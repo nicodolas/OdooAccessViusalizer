@@ -2,92 +2,223 @@
 <templates xml:space="preserve">
     <t t-name="odoo_access_visualizer.AccessVisualizerAction" owl="1">
         <div class="oav_root">
-            <div class="oav_header">
+            <header class="oav_header">
+                <div class="oav_brand">
+                    <div class="oav_kicker">SECURITY CONTROL ROOM · ODOO 19</div>
+                    <h1>Access Visualizer</h1>
+                    <p>Understand who can do what — and why.</p>
+                </div>
+                <div class="oav_header_actions">
+                    <div t-if="state.dashboard?.latest" class="oav_last_scan">
+                        <span>Latest snapshot</span>
+                        <strong><t t-esc="state.dashboard.latest.name"/></strong>
+                    </div>
+                    <button class="btn oav_btn oav_btn_accent" t-on-click="enqueueScan">
+                        <i class="fa fa-refresh me-1"/> Run rescan
+                    </button>
+                </div>
+            </header>
+
+            <div t-if="state.error" class="alert alert-danger oav_alert" role="alert">
+                <strong>Something needs attention.</strong>
+                <span><t t-esc="state.error"/></span>
+            </div>
+            <div t-if="state.loading" class="oav_loading">
+                <span class="oav_loading_mark"/> Preparing your security map…
+            </div>
+
+            <div t-if="!state.loading and !state.dashboard?.latest" class="oav_empty">
+                <div class="oav_empty_mark">◎</div>
                 <div>
-                    <h1>Odoo Access Visualizer</h1>
-                    <p class="oav_subtitle">Read-only security map and evidence-backed findings</p>
+                    <div class="oav_kicker">NO SNAPSHOT YET</div>
+                    <h2>Start with a read-only scan</h2>
+                    <p>We will map the security structure without changing a single access rule.</p>
+                    <button class="btn oav_btn oav_btn_accent" t-on-click="enqueueScan">Run first scan</button>
                 </div>
-                <div class="oav_actions">
-                    <button class="btn btn-primary" t-on-click="enqueueScan">
-                        <i class="fa fa-refresh me-1"/> Rescan
+            </div>
+
+            <main t-if="!state.loading and state.dashboard?.latest" class="oav_main">
+                <section class="oav_status_line">
+                    <div class="oav_status_dot" t-att-class="state.dashboard.active ? 'is_running' : 'is_ready'"/>
+                    <span t-if="state.dashboard.active">A new scan is running in the background.</span>
+                    <span t-else="">Snapshot ready for investigation.</span>
+                    <span class="oav_status_separator">·</span>
+                    <span><t t-esc="state.dashboard.latest.name"/></span>
+                </section>
+
+                <nav class="oav_tabs" aria-label="Visualizer sections">
+                    <button data-tab="overview" t-att-class="state.activeTab === 'overview' ? 'is_active' : ''" t-on-click="setTab">Overview</button>
+                    <button data-tab="graph" t-att-class="state.activeTab === 'graph' ? 'is_active' : ''" t-on-click="setTab">Explore map</button>
+                    <button data-tab="findings" t-att-class="state.activeTab === 'findings' ? 'is_active' : ''" t-on-click="setTab">
+                        Findings <span class="oav_tab_count"><t t-esc="state.dashboard.latest.finding_count"/></span>
                     </button>
-                    <button class="btn btn-secondary" t-on-click="reload">
-                        <i class="fa fa-repeat me-1"/> Refresh
-                    </button>
-                </div>
-            </div>
+                </nav>
 
-            <div t-if="state.error" class="alert alert-danger" role="alert">
-                <t t-esc="state.error"/>
-            </div>
-            <div t-if="state.loading" class="oav_state_card">
-                <i class="fa fa-spinner fa-spin me-2"/> Loading snapshot…
-            </div>
-            <div t-if="!state.loading and !state.dashboard?.latest" class="oav_state_card">
-                <h3>No completed snapshot</h3>
-                <p>Run the first read-only security scan to build the map.</p>
-                <button class="btn btn-primary" t-on-click="enqueueScan">Run first scan</button>
-            </div>
-
-            <div t-if="!state.loading and state.dashboard?.latest" class="oav_dashboard">
-                <div class="oav_toolbar">
-                    <div class="oav_filters">
-                        <input class="form-control" type="search" placeholder="Search nodes…" t-model="state.filters.search" t-on-keyup="applyFilters"/>
-                    </div>
-                    <div class="oav_summary">
-                        <span><strong><t t-esc="state.dashboard.latest.node_count"/></strong> nodes</span>
-                        <span><strong><t t-esc="state.dashboard.latest.edge_count"/></strong> edges</span>
-                        <span class="oav_finding_count"><strong><t t-esc="state.dashboard.latest.finding_count"/></strong> findings</span>
-                        <span t-if="state.dashboard.active" class="badge text-bg-info">Scan in progress</span>
-                    </div>
-                </div>
-
-                <div t-if="state.graph.budget_exceeded" class="alert alert-warning" role="alert">
-                    The current filter exceeds the render budget. Showing a bounded view; refine the search for complete detail.
-                </div>
-
-                <div class="oav_content">
-                    <section class="oav_graph_panel">
-                        <div class="oav_panel_header">
-                            <h2>Security relationship map</h2>
-                            <span class="text-muted">Scroll to zoom · drag to pan · select a node for details</span>
-                        </div>
-                        <div class="oav_graph" t-ref="graph"/>
-                    </section>
-                    <aside class="oav_detail_panel">
-                        <h2>Node details</h2>
-                        <div t-if="state.selectedNode" class="oav_detail">
-                            <h3><t t-esc="state.selectedNode.node.label"/></h3>
-                            <dl>
-                                <dt>Type</dt><dd><t t-esc="state.selectedNode.node.type"/></dd>
-                                <dt>Source</dt><dd><t t-esc="state.selectedNode.node.source_model"/> #<t t-esc="state.selectedNode.node.source_id"/></dd>
-                                <dt>Module</dt><dd><t t-esc="state.selectedNode.node.module"/></dd>
-                            </dl>
-                            <pre class="oav_metadata"><t t-esc="formatJson(state.selectedNode.node.metadata)"/></pre>
-                        </div>
-                        <p t-else="" class="text-muted">Select a node to inspect its evidence.</p>
-                    </aside>
-                </div>
-
-                <section class="oav_findings_panel">
-                    <div class="oav_panel_header">
-                        <h2>Findings</h2>
-                        <span class="text-muted">Critical findings are deterministic; warnings may be heuristic.</span>
-                    </div>
-                    <div t-if="!state.findings.length" class="text-muted">No findings in this snapshot.</div>
-                    <div t-else="" class="oav_findings">
-                        <article t-foreach="state.findings" t-as="finding" t-key="finding.id" t-att-class="`oav_finding oav_finding_${finding.severity}`">
-                            <div class="oav_finding_badges">
-                                <span class="badge" t-att-class="`text-bg-${finding.severity === 'critical' ? 'danger' : 'warning'}`"><t t-esc="finding.severity"/></span>
-                                <span class="badge text-bg-light"><t t-esc="finding.certainty"/></span>
-                            </div>
-                            <h3><t t-esc="finding.title"/></h3>
-                            <p><t t-esc="finding.description"/></p>
-                            <small><strong>Recommendation:</strong> <t t-esc="finding.recommendation"/></small>
+                <section t-if="state.activeTab === 'overview'" class="oav_overview">
+                    <div class="oav_kpis">
+                        <article class="oav_kpi oav_kpi_ink">
+                            <span class="oav_kpi_label">Access surface</span>
+                            <strong><t t-esc="state.dashboard.latest.node_count"/></strong>
+                            <small>security objects mapped</small>
+                        </article>
+                        <article class="oav_kpi">
+                            <span class="oav_kpi_label">Relationships</span>
+                            <strong><t t-esc="state.dashboard.latest.edge_count"/></strong>
+                            <small>permission paths captured</small>
+                        </article>
+                        <article class="oav_kpi oav_kpi_warn">
+                            <span class="oav_kpi_label">Needs attention</span>
+                            <strong><t t-esc="state.dashboard.latest.finding_count"/></strong>
+                            <small>evidence-backed findings</small>
+                        </article>
+                        <article class="oav_kpi oav_kpi_critical">
+                            <span class="oav_kpi_label">Critical</span>
+                            <strong><t t-esc="state.dashboard.overview?.severity_counts?.critical || 0"/></strong>
+                            <small>deterministic priority signals</small>
                         </article>
                     </div>
+
+                    <div class="oav_start_panel">
+                        <div class="oav_section_intro">
+                            <div class="oav_kicker">WHERE TO START</div>
+                            <h2>Three useful questions</h2>
+                            <p>Choose a question instead of staring at the whole system.</p>
+                        </div>
+                        <div class="oav_start_grid">
+                            <button class="oav_start_card" data-tab="findings" t-on-click="setTab">
+                                <span class="oav_start_number">01</span>
+                                <strong>What looks risky?</strong>
+                                <span>Review the highest-signal findings first.</span>
+                                <em>Open findings →</em>
+                            </button>
+                            <button class="oav_start_card" data-layer="group" t-on-click="openGraphLayer">
+                                <span class="oav_start_number">02</span>
+                                <strong>Who inherits access?</strong>
+                                <span>Trace users, groups and implied roles.</span>
+                                <em>Explore groups →</em>
+                            </button>
+                            <button class="oav_start_card" data-layer="model" t-on-click="openGraphLayer">
+                                <span class="oav_start_number">03</span>
+                                <strong>Who can touch a model?</strong>
+                                <span>Start from a model and inspect its path.</span>
+                                <em>Explore models →</em>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="oav_path_panel">
+                        <div class="oav_section_intro compact">
+                            <div class="oav_kicker">THE PERMISSION PATH</div>
+                            <h2>How Odoo access connects</h2>
+                        </div>
+                        <div class="oav_path">
+                            <button t-foreach="state.dashboard.overview?.layers || []" t-as="layer" t-key="layer.type" class="oav_path_step" t-att-data-layer="layer.type" t-on-click="openGraphLayer">
+                                <span class="oav_path_count"><t t-esc="layer.count"/></span>
+                                <strong><t t-esc="layer.label"/></strong>
+                                <span class="oav_path_type"><t t-esc="layer.type"/></span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="oav_findings_panel">
+                        <div class="oav_panel_header">
+                            <div>
+                                <div class="oav_kicker">FIRST SIGNALS</div>
+                                <h2>Findings worth opening</h2>
+                            </div>
+                            <button class="oav_link_button" data-tab="findings" t-on-click="setTab">View all →</button>
+                        </div>
+                        <div t-if="!state.findings.length" class="oav_no_findings">No findings in this snapshot.</div>
+                        <div t-else="" class="oav_findings oav_findings_preview">
+                            <button t-foreach="state.findings" t-as="finding" t-key="finding.id" class="oav_finding" t-att-data-finding-id="finding.id" t-att-class="`oav_finding oav_finding_${finding.severity}`" t-on-click="focusFinding">
+                                <span class="oav_finding_severity"><t t-esc="finding.severity"/></span>
+                                <span class="oav_finding_body">
+                                    <strong><t t-esc="finding.title"/></strong>
+                                    <span><t t-esc="finding.description"/></span>
+                                </span>
+                                <span class="oav_finding_arrow">↗</span>
+                            </button>
+                        </div>
+                    </div>
                 </section>
-            </div>
+
+                <section t-if="state.activeTab === 'graph'" class="oav_graph_view">
+                    <div class="oav_explorer_bar">
+                        <div>
+                            <div class="oav_kicker">FOCUSED INVESTIGATION</div>
+                            <h2>Explore the permission map</h2>
+                            <p>Pick one layer or search for a specific object. The map stays focused on what you asked.</p>
+                        </div>
+                        <div class="oav_explorer_controls">
+                            <select class="form-select" t-on-change="chooseLayer">
+                                <option value="">Choose a layer…</option>
+                                <option value="user">Users</option>
+                                <option value="group">Security groups</option>
+                                <option value="model">Models</option>
+                                <option value="acl">Access controls</option>
+                                <option value="rule">Record rules</option>
+                                <option value="menu">Menus</option>
+                            </select>
+                            <input class="form-control" type="search" placeholder="Search a name or technical key…" t-model="state.filters.search"/>
+                            <button class="btn oav_btn oav_btn_accent" t-on-click="applyGraphFilters">Show map</button>
+                            <button class="btn oav_btn oav_btn_ghost" t-on-click="clearGraphFilters">Reset</button>
+                        </div>
+                    </div>
+                    <div t-if="state.graph.needs_focus" class="oav_focus_empty">
+                        <div class="oav_focus_icon">⌁</div>
+                        <h3>The full system is intentionally not shown at once</h3>
+                        <p>Choose a layer or search above. Focused maps are easier to read and safer for large databases.</p>
+                    </div>
+                    <div t-else="" class="oav_content">
+                        <section class="oav_graph_panel">
+                            <div class="oav_panel_header">
+                                <div>
+                                    <div class="oav_kicker">RELATIONSHIP MAP</div>
+                                    <h2><t t-esc="state.graph.total_nodes"/> objects in focus</h2>
+                                </div>
+                                <span class="oav_map_hint">Scroll to zoom · drag to pan · select a node</span>
+                            </div>
+                            <div t-if="state.graph.budget_exceeded" class="oav_budget_notice">Map capped at <t t-esc="state.graph.render_limits.nodes"/> nodes. Narrow the search for a complete view.</div>
+                            <div class="oav_graph" t-ref="graph"/>
+                        </section>
+                        <aside class="oav_detail_panel">
+                            <div class="oav_kicker">SELECTED OBJECT</div>
+                            <h2>Why this object matters</h2>
+                            <div t-if="state.selectedNode" class="oav_detail">
+                                <h3><t t-esc="state.selectedNode.node.label"/></h3>
+                                <div class="oav_detail_type"><t t-esc="state.selectedNode.node.type"/></div>
+                                <dl>
+                                    <dt>Source</dt><dd><t t-esc="state.selectedNode.node.source_model"/> #<t t-esc="state.selectedNode.node.source_id"/></dd>
+                                    <dt>Module</dt><dd><t t-esc="state.selectedNode.node.module"/></dd>
+                                </dl>
+                                <pre class="oav_metadata"><t t-esc="formatJson(state.selectedNode.node.metadata)"/></pre>
+                            </div>
+                            <p t-else="" class="oav_detail_empty">Click any node to see its source, relationships and evidence.</p>
+                        </aside>
+                    </div>
+                </section>
+
+                <section t-if="state.activeTab === 'findings'" class="oav_findings_view">
+                    <div class="oav_explorer_bar compact_bar">
+                        <div>
+                            <div class="oav_kicker">EVIDENCE QUEUE</div>
+                            <h2>Findings, ordered for action</h2>
+                            <p>Critical means structurally strong evidence. Warning means investigate the context.</p>
+                        </div>
+                    </div>
+                    <div class="oav_findings oav_findings_full">
+                        <button t-foreach="state.findings" t-as="finding" t-key="finding.id" class="oav_finding" t-att-data-finding-id="finding.id" t-att-class="`oav_finding oav_finding_${finding.severity}`" t-on-click="focusFinding">
+                            <span class="oav_finding_severity"><t t-esc="finding.severity"/></span>
+                            <span class="oav_finding_body">
+                                <strong><t t-esc="finding.title"/></strong>
+                                <span><t t-esc="finding.description"/></span>
+                                <small><t t-esc="finding.recommendation"/></small>
+                            </span>
+                            <span class="oav_finding_arrow">↗</span>
+                        </button>
+                    </div>
+                </section>
+            </main>
         </div>
     </t>
 </templates>

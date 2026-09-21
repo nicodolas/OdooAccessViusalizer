@@ -30,15 +30,29 @@ export class AccessGraphRenderer {
             this.svg.replaceChildren();
             this.svg = null;
         }
-        this.container.replaceChildren();
+        this.container?.replaceChildren();
     }
 
     render(graph) {
         this.destroy();
-        if (window.cytoscape) {
-            this._renderCytoscape(graph);
+        if (!graph || !graph.nodes || !graph.nodes.length) {
             return;
         }
+        // Cytoscape is excellent for a focused map, but forcing it to lay out
+        // a whole security database makes the UI fragile and unreadable.
+        if (window.cytoscape && graph.nodes.length <= 120) {
+            try {
+                this._renderCytoscape(graph);
+                return;
+            } catch (error) {
+                console.warn("Cytoscape failed; using the safe SVG renderer.", error);
+                this.destroy();
+            }
+        }
+        this._renderSvg(graph);
+    }
+
+    _renderSvg(graph) {
         const svg = document.createElementNS(SVG_NS, "svg");
         svg.setAttribute("class", "oav_graph_svg");
         svg.setAttribute("viewBox", "0 0 1200 720");
@@ -140,7 +154,7 @@ export class AccessGraphRenderer {
                         "text-valign": "bottom",
                         "text-margin-y": 6,
                         "text-wrap": "ellipsis",
-                        "text-max-width": 110,
+                        "text-max-width": "110px",
                         width: 28,
                         height: 28,
                     },
