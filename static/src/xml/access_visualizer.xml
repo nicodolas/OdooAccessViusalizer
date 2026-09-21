@@ -198,7 +198,7 @@
                                 <pre class="oav_metadata"><t t-esc="formatJson(state.selectedNode.node.metadata)"/></pre>
                                 <div t-if="state.selectedNode.relationships?.length" class="oav_relationships">
                                     <div class="oav_detail_label">Evidence path</div>
-                                    <button t-foreach="state.selectedNode.relationships.slice(0, 40)" t-as="relationship" t-key="`${relationship.edge_type}-${relationship.node.key}`" class="oav_relationship">
+                                    <button t-foreach="state.selectedNode.relationships.slice(0, 40)" t-as="relationship" t-key="`${relationship.edge_type}-${relationship.node.key}`" t-on-click="() => this.selectNode(relationship.node.key)" class="oav_relationship">
                                         <span class="oav_relationship_edge"><t t-esc="relationship.edge_type"/></span>
                                         <strong><t t-esc="relationship.node.label"/></strong>
                                         <span class="oav_relationship_type"><t t-esc="relationship.node.type"/></span>
