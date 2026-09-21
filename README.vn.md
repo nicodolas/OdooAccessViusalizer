@@ -42,6 +42,9 @@ lúc.
 - Chọn node để xem source record, module và metadata.
 - Graph nhỏ dùng Cytoscape.js; graph lớn dùng SVG fallback an toàn.
 - Response graph giới hạn 250 node và 1.500 edge.
+- Map có trọng tâm mở rộng tối đa ba hop phân quyền để việc chọn model hoặc
+  group có thể hiển thị thêm ACL, record rule, group, user, menu và privilege
+  liên quan mà vẫn giữ giới hạn số node/edge được render.
 
 ### Findings
 
@@ -167,4 +170,3 @@ permission semantics hoặc lifecycle snapshot.
 
 Module phát hành theo MIT License. Cytoscape.js được vendored kèm license và
 notice tương ứng trong `static/lib/`.
-

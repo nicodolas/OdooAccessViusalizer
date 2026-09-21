@@ -1,6 +1,8 @@
 class AccessGraphQuery:
     NODE_LIMIT = 250
     EDGE_LIMIT = 1500
+    SEED_LIMIT = 50
+    EXPANSION_HOPS = 3
 
     NODE_LABELS = {
         "category": "Module categories",
@@ -85,10 +87,43 @@ class AccessGraphQuery:
                 "render_limits": {"nodes": self.NODE_LIMIT, "edges": self.EDGE_LIMIT},
             }
 
-        nodes = Node.search(domain, order="node_type, label, id", limit=self.NODE_LIMIT + 1)
-        budget_exceeded = len(nodes) > self.NODE_LIMIT
-        if budget_exceeded:
-            nodes = nodes[: self.NODE_LIMIT]
+        seed_limit = min(self.NODE_LIMIT, self.SEED_LIMIT)
+        seed_nodes = Node.search(domain, order="node_type, label, id", limit=seed_limit + 1)
+        seed_count = total_nodes
+        budget_exceeded = seed_count > seed_limit
+        ordered_keys = list(seed_nodes[:seed_limit].mapped("node_key"))
+        known_keys = set(ordered_keys)
+
+        # Expand up to three permission hops so model focus can reach
+        # Model -> ACL/Rule -> Group -> User/Menu/Privilege.
+        for _hop in range(self.EXPANSION_HOPS):
+            if not ordered_keys:
+                break
+            neighborhood_edges = Edge.search(
+                [
+                    ("snapshot_id", "=", snapshot.id),
+                    "|",
+                    ("source_key", "in", ordered_keys),
+                    ("target_key", "in", ordered_keys),
+                ],
+                order="id",
+                limit=self.EDGE_LIMIT * 2 + 1,
+            )
+            added = 0
+            for edge in neighborhood_edges:
+                for key in (edge.source_key, edge.target_key):
+                    if key not in known_keys:
+                        known_keys.add(key)
+                        if len(ordered_keys) < self.NODE_LIMIT:
+                            ordered_keys.append(key)
+                        else:
+                            budget_exceeded = True
+                        added += 1
+            if not added:
+                break
+
+        node_domain = [("snapshot_id", "=", snapshot.id), ("node_key", "in", ordered_keys)]
+        nodes = Node.search(node_domain, order="node_type, label, id")
         keys = nodes.mapped("node_key")
         edge_domain = [("snapshot_id", "=", snapshot.id)]
         if keys:
@@ -105,7 +140,9 @@ class AccessGraphQuery:
             "budget_exceeded": budget_exceeded,
             "needs_focus": False,
             "total_nodes": total_nodes,
+            "rendered_nodes": len(nodes),
             "total_edges": total_edges,
+            "seed_count": seed_count,
             "render_limits": {"nodes": self.NODE_LIMIT, "edges": self.EDGE_LIMIT},
         }
 
