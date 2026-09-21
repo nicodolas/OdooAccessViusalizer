@@ -104,7 +104,7 @@ class AccessGraphQuery:
                     ("target_key", "in", ordered_keys),
                 ],
                 order="id",
-                limit=self.EDGE_LIMIT * 2,
+                limit=self.EDGE_LIMIT * 2 + 1,
             )
             added = 0
             for edge in neighborhood_edges:
