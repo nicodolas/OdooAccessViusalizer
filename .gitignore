@@ -1,0 +1,14 @@
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.coverage
+coverage.xml
+.env
+*.log
+.venv/
+venv/
+.idea/
+.vscode/
+node_modules/
+dist/
+

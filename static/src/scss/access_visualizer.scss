@@ -1,0 +1,80 @@
+.oav_root {
+    --oav-border: #d8dee9;
+    --oav-panel: #ffffff;
+    --oav-background: #f5f7fb;
+    min-height: calc(100vh - 46px);
+    padding: 24px;
+    background: var(--oav-background);
+    color: #1f2937;
+
+    .oav_header,
+    .oav_toolbar,
+    .oav_panel_header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+    }
+
+    .oav_header {
+        margin-bottom: 20px;
+
+        h1, h2, h3, p { margin: 0; }
+    }
+
+    .oav_subtitle { color: #64748b; }
+    .oav_actions { display: flex; gap: 8px; }
+    .oav_state_card, .oav_graph_panel, .oav_detail_panel, .oav_findings_panel {
+        background: var(--oav-panel);
+        border: 1px solid var(--oav-border);
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(15, 23, 42, .05);
+    }
+    .oav_state_card { padding: 40px; text-align: center; }
+    .oav_toolbar {
+        padding: 12px 16px;
+        margin-bottom: 16px;
+        background: var(--oav-panel);
+        border: 1px solid var(--oav-border);
+        border-radius: 8px;
+    }
+    .oav_filters { min-width: 280px; }
+    .oav_summary { display: flex; align-items: center; gap: 16px; color: #475569; }
+    .oav_content { display: grid; grid-template-columns: minmax(0, 1fr) 320px; gap: 16px; }
+    .oav_graph_panel, .oav_detail_panel, .oav_findings_panel { padding: 16px; }
+    .oav_graph_panel { min-width: 0; }
+    .oav_panel_header { margin-bottom: 12px; }
+    .oav_panel_header h2 { font-size: 1.1rem; }
+    .oav_graph {
+        min-height: 560px;
+        overflow: hidden;
+        border: 1px solid var(--oav-border);
+        border-radius: 6px;
+        background: radial-gradient(circle at 1px 1px, #e2e8f0 1px, transparent 0) 0 0 / 24px 24px;
+    }
+    .oav_graph_svg { width: 100%; height: 560px; cursor: grab; }
+    .oav_graph_svg:active { cursor: grabbing; }
+    .oav_edge { stroke: #94a3b8; stroke-width: 1.2; opacity: .65; }
+    .oav_edge_implied { stroke: #16a34a; stroke-width: 2; }
+    .oav_edge_applies, .oav_edge_protects { stroke: #dc2626; }
+    .oav_node { outline: none; cursor: pointer; }
+    .oav_node:focus .oav_node_shape, .oav_node:hover .oav_node_shape { stroke: #0f172a; stroke-width: 3; }
+    .oav_node_label { font-size: 11px; fill: #334155; pointer-events: none; }
+    .oav_metadata { max-height: 260px; overflow: auto; background: #f8fafc; padding: 10px; border-radius: 4px; }
+    .oav_detail dl { display: grid; grid-template-columns: 80px 1fr; gap: 6px; margin-top: 16px; }
+    .oav_detail dt { color: #64748b; }
+    .oav_detail dd { margin: 0; overflow-wrap: anywhere; }
+    .oav_findings_panel { margin-top: 16px; }
+    .oav_findings { display: grid; gap: 10px; max-height: 420px; overflow: auto; }
+    .oav_finding { padding: 12px; border: 1px solid var(--oav-border); border-left: 4px solid #f59e0b; border-radius: 6px; }
+    .oav_finding_critical { border-left-color: #dc2626; }
+    .oav_finding h3 { margin: 8px 0 4px; font-size: 1rem; }
+    .oav_finding p { margin: 0 0 8px; }
+    .oav_finding_badges { display: flex; gap: 6px; }
+
+    @media (max-width: 1100px) {
+        .oav_content { grid-template-columns: 1fr; }
+        .oav_detail_panel { min-height: 180px; }
+    }
+}
+

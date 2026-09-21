@@ -1,0 +1,6 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_oav_snapshot_system,oav.access.snapshot system,model_oav_access_snapshot,base.group_system,1,1,1,1
+access_oav_snapshot_node_system,oav.access.snapshot.node system,model_oav_access_snapshot_node,base.group_system,1,1,1,1
+access_oav_snapshot_edge_system,oav.access.snapshot.edge system,model_oav_access_snapshot_edge,base.group_system,1,1,1,1
+access_oav_finding_system,oav.access.finding system,model_oav_access_finding,base.group_system,1,1,1,1
+

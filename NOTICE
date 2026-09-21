@@ -1,0 +1,6 @@
+Odoo Access Visualizer vendors Cytoscape.js 3.34.3 under static/lib/
+cytoscape.min.js. Cytoscape.js is distributed under the MIT License. Its
+license text is included in static/lib/cytoscape.LICENSE.
+
+The graph renderer keeps a dependency-free SVG fallback for degraded asset
+loading without changing the backend graph contract.
