@@ -2,6 +2,7 @@ class AccessGraphQuery:
     NODE_LIMIT = 250
     EDGE_LIMIT = 1500
     SEED_LIMIT = 50
+    EXPANSION_HOPS = 3
 
     NODE_LABELS = {
         "category": "Module categories",
@@ -93,9 +94,9 @@ class AccessGraphQuery:
         ordered_keys = list(seed_nodes[:seed_limit].mapped("node_key"))
         known_keys = set(ordered_keys)
 
-        # Expand the selected layer by three hops so a group/model selection
-        # becomes an actual permission story instead of an isolated node list.
-        for _hop in range(3):
+        # Expand up to three permission hops so model focus can reach
+        # Model -> ACL/Rule -> Group -> User/Menu/Privilege.
+        for _hop in range(self.EXPANSION_HOPS):
             if not ordered_keys:
                 break
             neighborhood_edges = Edge.search(
@@ -138,7 +139,8 @@ class AccessGraphQuery:
             "edges": [self._edge_payload(edge) for edge in edges],
             "budget_exceeded": budget_exceeded,
             "needs_focus": False,
-            "total_nodes": len(nodes),
+            "total_nodes": total_nodes,
+            "rendered_nodes": len(nodes),
             "total_edges": total_edges,
             "seed_count": seed_count,
             "render_limits": {"nodes": self.NODE_LIMIT, "edges": self.EDGE_LIMIT},

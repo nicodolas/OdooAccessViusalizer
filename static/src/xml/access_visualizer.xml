@@ -174,7 +174,7 @@
                             <div class="oav_panel_header">
                                 <div>
                                     <div class="oav_kicker">RELATIONSHIP MAP</div>
-                                    <h2><t t-esc="state.graph.total_nodes"/> objects in focus</h2>
+                                    <h2><t t-esc="state.graph.rendered_nodes"/> shown · <t t-esc="state.graph.total_nodes"/> selected</h2>
                                 </div>
                                 <span class="oav_map_hint">Scroll to zoom · drag to pan · select a node</span>
                             </div>

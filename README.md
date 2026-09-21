@@ -59,6 +59,10 @@ snapshot view under five seconds. The browser render budget is bounded to
 2,000 nodes and 10,000 edges per response; refine filters when the budget is
 exceeded.
 
+Focused map exploration expands up to three permission hops so a model or
+group selection can reveal related ACLs, record rules, groups, users, menus
+and privileges while keeping the rendered result bounded.
+
 ### Development
 
 Run the Odoo test suite with the module installed and the repository's local
