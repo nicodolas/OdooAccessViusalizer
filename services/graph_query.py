@@ -86,7 +86,7 @@ class AccessGraphQuery:
             }
 
         seed_nodes = Node.search(domain, order="node_type, label, id", limit=self.NODE_LIMIT + 1)
-        seed_count = len(seed_nodes)
+        seed_count = total_nodes
         budget_exceeded = seed_count > self.NODE_LIMIT
         ordered_keys = list(seed_nodes[: self.NODE_LIMIT].mapped("node_key"))
         known_keys = set(ordered_keys)
