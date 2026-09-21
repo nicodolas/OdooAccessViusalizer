@@ -85,10 +85,42 @@ class AccessGraphQuery:
                 "render_limits": {"nodes": self.NODE_LIMIT, "edges": self.EDGE_LIMIT},
             }
 
-        nodes = Node.search(domain, order="node_type, label, id", limit=self.NODE_LIMIT + 1)
-        budget_exceeded = len(nodes) > self.NODE_LIMIT
-        if budget_exceeded:
-            nodes = nodes[: self.NODE_LIMIT]
+        seed_nodes = Node.search(domain, order="node_type, label, id", limit=self.NODE_LIMIT + 1)
+        seed_count = len(seed_nodes)
+        budget_exceeded = seed_count > self.NODE_LIMIT
+        ordered_keys = list(seed_nodes[: self.NODE_LIMIT].mapped("node_key"))
+        known_keys = set(ordered_keys)
+
+        # Expand the selected layer by two hops so a group/model selection
+        # becomes an actual permission story instead of an isolated node list.
+        for _hop in range(2):
+            if not ordered_keys:
+                break
+            neighborhood_edges = Edge.search(
+                [
+                    ("snapshot_id", "=", snapshot.id),
+                    "|",
+                    ("source_key", "in", ordered_keys),
+                    ("target_key", "in", ordered_keys),
+                ],
+                order="id",
+                limit=self.EDGE_LIMIT * 2,
+            )
+            added = 0
+            for edge in neighborhood_edges:
+                for key in (edge.source_key, edge.target_key):
+                    if key not in known_keys:
+                        known_keys.add(key)
+                        if len(ordered_keys) < self.NODE_LIMIT:
+                            ordered_keys.append(key)
+                        else:
+                            budget_exceeded = True
+                        added += 1
+            if not added:
+                break
+
+        node_domain = [("snapshot_id", "=", snapshot.id), ("node_key", "in", ordered_keys)]
+        nodes = Node.search(node_domain, order="node_type, label, id")
         keys = nodes.mapped("node_key")
         edge_domain = [("snapshot_id", "=", snapshot.id)]
         if keys:
@@ -104,8 +136,9 @@ class AccessGraphQuery:
             "edges": [self._edge_payload(edge) for edge in edges],
             "budget_exceeded": budget_exceeded,
             "needs_focus": False,
-            "total_nodes": total_nodes,
+            "total_nodes": len(nodes),
             "total_edges": total_edges,
+            "seed_count": seed_count,
             "render_limits": {"nodes": self.NODE_LIMIT, "edges": self.EDGE_LIMIT},
         }
 
