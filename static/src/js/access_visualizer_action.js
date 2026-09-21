@@ -1,5 +1,6 @@
 import { Component, onPatched, onWillStart, onWillUnmount, useRef, useState } from "@odoo/owl";
 import { registry } from "@web/core/registry";
+import { _t } from "@web/core/l10n/translation";
 import { useService } from "@web/core/utils/hooks";
 
 import { AccessVisualizerApi } from "./access_visualizer_api";
@@ -53,7 +54,7 @@ export class AccessVisualizerAction extends Component {
                 ? (this.state.dashboard.overview?.top_findings || await this.api.findings(latest.id))
                 : [];
         } catch (error) {
-            this.state.error = error.message || "Unable to load Access Visualizer.";
+            this.state.error = error.message || _t("Unable to load Access Visualizer.");
         } finally {
             this.state.loading = false;
             this.renderGraph();
@@ -128,10 +129,10 @@ export class AccessVisualizerAction extends Component {
     async enqueueScan() {
         try {
             await this.api.enqueueScan();
-            this.notification.add("Security scan queued.", { type: "success" });
+            this.notification.add(_t("Security scan queued."), { type: "success" });
             await this.reload();
         } catch (error) {
-            this.state.error = error.message || "Unable to queue a scan.";
+            this.state.error = error.message || _t("Unable to queue a scan.");
         }
     }
 
@@ -143,7 +144,7 @@ export class AccessVisualizerAction extends Component {
         try {
             this.state.selectedNode = await this.api.nodeDetail(latest.id, nodeKey);
         } catch (error) {
-            this.state.error = error.message || "Unable to load node details.";
+            this.state.error = error.message || _t("Unable to load node details.");
         }
     }
 
