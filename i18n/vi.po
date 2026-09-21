@@ -268,7 +268,7 @@ msgstr "JSON bằng chứng"
 #. odoo-javascript
 #: code:addons/odoo_access_visualizer/static/src/xml/access_visualizer.xml:0
 msgid "Explore groups →"
-msgstr "Khám phá group →"
+msgstr "Khám phá nhóm bảo mật →"
 
 #. module: odoo_access_visualizer
 #. odoo-javascript
