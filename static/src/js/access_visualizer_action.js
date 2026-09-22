@@ -239,7 +239,7 @@ export class AccessVisualizerAction extends Component {
                 aclByGroup.set(edge.source, [...(aclByGroup.get(edge.source) || []), target]);
             }
         }
-        for (const [rootGroupId] of aclByGroup) {
+        for (const rootGroupId of [...nodes.values()].filter((node) => node.type === "group").map((node) => node.id)) {
             const effectiveGroups = new Set([rootGroupId]);
             const frontier = [rootGroupId];
             while (frontier.length) {
