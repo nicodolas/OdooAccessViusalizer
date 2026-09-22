@@ -78,6 +78,11 @@ class AccessSnapshot(models.Model):
     @api.model
     def enqueue_scan(self):
         self._check_visualizer_access()
+        # Serialize the check-and-create section so two browser clicks or two
+        # concurrent workers cannot enqueue duplicate active scans.
+        self.env.cr.execute(
+            "SELECT pg_advisory_xact_lock(hashtext('oav_access_visualizer.enqueue_scan'))"
+        )
         active_id = self._active_scan_id()
         if active_id:
             snapshot = self.browse(active_id)
@@ -186,6 +191,9 @@ class AccessSnapshot(models.Model):
         active = self.search(
             [("state", "in", ["queued", "running"])], order="id desc", limit=1
         )
+        recent_snapshots = self.search(
+            [("state", "=", "completed")], order="completed_at desc, id desc", limit=10
+        )
         graph_query = AccessGraphQuery(self.env)
         graph = graph_query.get_graph(latest, filters or {}) if latest else {
             "nodes": [],
@@ -198,6 +206,7 @@ class AccessSnapshot(models.Model):
         return {
             "latest": latest._status_payload() if latest else None,
             "active": active._status_payload() if active else None,
+            "recent_snapshots": [snapshot._status_payload() for snapshot in recent_snapshots],
             "overview": graph_query.get_overview(latest) if latest else {
                 "layers": [],
                 "severity_counts": {},
@@ -230,3 +239,14 @@ class AccessSnapshot(models.Model):
         if not snapshot or snapshot.state != "completed":
             return []
         return AccessGraphQuery(self.env).get_findings(snapshot, filters or {})
+
+    @api.model
+    def get_snapshot_compare(self, current_id, baseline_id):
+        self._check_visualizer_access()
+        current = self.browse(current_id).exists()
+        baseline = self.browse(baseline_id).exists()
+        if not current or not baseline or current.state != "completed" or baseline.state != "completed":
+            raise UserError(_("Only completed snapshots can be compared."))
+        if current.id == baseline.id:
+            raise UserError(_("Choose two different snapshots to compare."))
+        return AccessGraphQuery(self.env).compare_snapshots(current, baseline)

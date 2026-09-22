@@ -23,5 +23,8 @@ export class AccessVisualizerApi {
     findings(snapshotId, filters = {}) {
         return this.orm.call(this.model, "get_findings", [snapshotId, filters]);
     }
-}
 
+    compare(currentId, baselineId) {
+        return this.orm.call(this.model, "get_snapshot_compare", [currentId, baselineId]);
+    }
+}

@@ -35,14 +35,15 @@ export class AccessGraphRenderer {
         this.container?.replaceChildren();
     }
 
-    render(graph) {
+    render(graph, options = {}) {
         this.destroy();
         if (!graph || !graph.nodes || !graph.nodes.length) {
             return;
         }
+        graph = this._viewGraph(graph, options);
         // Cytoscape is excellent for a focused map, but forcing it to lay out
         // a whole security database makes the UI fragile and unreadable.
-        if (window.cytoscape && graph.nodes.length <= 120) {
+        if (window.cytoscape && graph.nodes.length <= 80) {
             try {
                 this._renderCytoscape(graph);
                 return;
@@ -52,6 +53,32 @@ export class AccessGraphRenderer {
             }
         }
         this._renderSvg(graph);
+    }
+
+    _viewGraph(graph, { mode = "path", selectedKey } = {}) {
+        if ((mode === "path" || mode === "neighborhood") && !selectedKey) {
+            return { ...graph, edges: [] };
+        }
+        if (mode !== "path" && mode !== "neighborhood") {
+            return graph;
+        }
+        const related = new Set([selectedKey]);
+        let frontier = new Set([selectedKey]);
+        const hops = mode === "neighborhood" ? 2 : 1;
+        for (let hop = 0; hop < hops; hop++) {
+            const next = new Set();
+            for (const edge of graph.edges || []) {
+                if (frontier.has(edge.source)) next.add(edge.target);
+                if (frontier.has(edge.target)) next.add(edge.source);
+            }
+            next.forEach((key) => related.add(key));
+            frontier = next;
+        }
+        return {
+            ...graph,
+            nodes: graph.nodes.filter((node) => related.has(node.id)),
+            edges: graph.edges.filter((edge) => related.has(edge.source) && related.has(edge.target)),
+        };
     }
 
     _renderSvg(graph) {
@@ -67,6 +94,7 @@ export class AccessGraphRenderer {
         this._installNavigation(svg);
 
         const nodes = graph.nodes || [];
+        const dense = nodes.length > 60;
         const positions = new Map();
         const columns = Math.max(1, Math.ceil(Math.sqrt(nodes.length)));
         const cellWidth = 1120 / columns;
@@ -92,6 +120,8 @@ export class AccessGraphRenderer {
             line.setAttribute("y2", target.y);
             line.setAttribute("class", `oav_edge oav_edge_${edge.type}`);
             line.setAttribute("data-edge-type", edge.type);
+            line.dataset.source = edge.source;
+            line.dataset.target = edge.target;
             viewport.appendChild(line);
         }
 
@@ -120,12 +150,53 @@ export class AccessGraphRenderer {
             label.setAttribute("x", point.x);
             label.setAttribute("y", point.y + 34);
             label.setAttribute("text-anchor", "middle");
-            label.setAttribute("class", "oav_node_label");
-            label.textContent = this._truncate(node.label || node.key, 22);
+            label.setAttribute("class", dense ? "oav_node_label oav_dense_label" : "oav_node_label");
+            label.textContent = this._truncate(node.label || node.key, dense ? 14 : 22);
+            const title = document.createElementNS(SVG_NS, "title");
+            title.textContent = node.label || node.key;
+            group.appendChild(title);
             group.appendChild(label);
             viewport.appendChild(group);
         }
         this.container.appendChild(svg);
+    }
+
+    highlightPath(nodeKey, relatedKeys = []) {
+        if (!nodeKey) {
+            if (this.cy) {
+                this.cy.nodes().removeClass("oav_selected oav_related oav_dimmed");
+                this.cy.edges().removeClass("oav_path_edge oav_dimmed");
+            } else {
+                this.container.querySelectorAll(".oav_node, .oav_edge").forEach((element) => {
+                    element.classList.remove("is_selected", "is_related", "is_dimmed", "is_path_edge");
+                });
+            }
+            return;
+        }
+        const pathKeys = new Set([nodeKey, ...relatedKeys]);
+        if (this.cy) {
+            this.cy.nodes().removeClass("oav_selected oav_related oav_dimmed");
+            this.cy.edges().removeClass("oav_path_edge oav_dimmed");
+            this.cy.nodes().forEach((node) => {
+                node.addClass(node.id() === nodeKey ? "oav_selected" : pathKeys.has(node.id()) ? "oav_related" : "oav_dimmed");
+            });
+            this.cy.edges().forEach((edge) => {
+                const onPath = pathKeys.has(edge.source().id()) && pathKeys.has(edge.target().id());
+                edge.addClass(onPath ? "oav_path_edge" : "oav_dimmed");
+            });
+            return;
+        }
+        this.container.querySelectorAll(".oav_node").forEach((node) => {
+            const active = pathKeys.has(node.dataset.nodeKey);
+            node.classList.toggle("is_selected", node.dataset.nodeKey === nodeKey);
+            node.classList.toggle("is_related", active && node.dataset.nodeKey !== nodeKey);
+            node.classList.toggle("is_dimmed", !active);
+        });
+        this.container.querySelectorAll(".oav_edge").forEach((edge) => {
+            const onPath = pathKeys.has(edge.dataset.source) && pathKeys.has(edge.dataset.target);
+            edge.classList.toggle("is_path_edge", onPath);
+            edge.classList.toggle("is_dimmed", !onPath);
+        });
     }
 
     _renderCytoscape(graph) {
@@ -181,12 +252,17 @@ export class AccessGraphRenderer {
                 },
                 { selector: 'edge[type = "implied"]', style: { width: 2, "line-color": "#16a34a", "target-arrow-color": "#16a34a" } },
                 { selector: 'edge[type = "applies"]', style: { "line-color": "#dc2626", "target-arrow-color": "#dc2626" } },
+                { selector: ".oav_selected", style: { "border-width": 5, "border-color": "#0f766e", width: 42, height: 42 } },
+                { selector: ".oav_related", style: { "border-width": 3, "border-color": "#99c9c3" } },
+                { selector: ".oav_dimmed", style: { opacity: 0.2 } },
+                { selector: ".oav_path_edge", style: { width: 3, opacity: 1, "line-color": "#0f766e", "target-arrow-color": "#0f766e" } },
             ],
             layout: {
-                name: (graph.nodes || []).length > 500 ? "grid" : "breadthfirst",
+                name: (graph.nodes || []).length <= 20 ? "grid" : "breadthfirst",
                 directed: true,
                 padding: 24,
                 animate: false,
+                avoidOverlap: true,
             },
             wheelSensitivity: 0.2,
         });

@@ -979,6 +979,18 @@ msgstr "object trong phạm vi"
 
 #. module: odoo_access_visualizer
 #. odoo-javascript
+#: code:addons/odoo_access_visualizer/static/src/js/access_visualizer_action.js:0
+msgid "of"
+msgstr "trên tổng số"
+
+#. module: odoo_access_visualizer
+#. odoo-javascript
+#: code:addons/odoo_access_visualizer/static/src/xml/access_visualizer.xml:0
+msgid "Clear highlight"
+msgstr "Bỏ highlight"
+
+#. module: odoo_access_visualizer
+#. odoo-javascript
 #: code:addons/odoo_access_visualizer/static/src/xml/access_visualizer.xml:0
 msgid "permission paths captured"
 msgstr "đường dẫn phân quyền đã ghi nhận"
@@ -988,3 +1000,105 @@ msgstr "đường dẫn phân quyền đã ghi nhận"
 #: code:addons/odoo_access_visualizer/static/src/xml/access_visualizer.xml:0
 msgid "security objects mapped"
 msgstr "object bảo mật đã lập bản đồ"
+
+#. module: odoo_access_visualizer
+#. odoo-javascript
+#: code:addons/odoo_access_visualizer/static/src/xml/access_visualizer.xml:0
+msgid "How to read the map"
+msgstr "Cách đọc bản đồ"
+
+#. module: odoo_access_visualizer
+#. odoo-javascript
+#: code:addons/odoo_access_visualizer/static/src/xml/access_visualizer.xml:0
+msgid "Color identifies the object type. Lines identify the relationship."
+msgstr "Màu sắc xác định loại object. Đường nối xác định quan hệ."
+
+#. module: odoo_access_visualizer
+#. odoo-javascript
+#: code:addons/odoo_access_visualizer/static/src/xml/access_visualizer.xml:0
+msgid "Effective access"
+msgstr "Quyền truy cập hiệu lực"
+
+#. module: odoo_access_visualizer
+#. odoo-javascript
+#: code:addons/odoo_access_visualizer/static/src/xml/access_visualizer.xml:0
+msgid "Record rule impact"
+msgstr "Ảnh hưởng của record rule"
+
+#. module: odoo_access_visualizer
+#. odoo-javascript
+#: code:addons/odoo_access_visualizer/static/src/xml/access_visualizer.xml:0
+msgid "Evidence path"
+msgstr "Đường dẫn bằng chứng"
+
+#. module: odoo_access_visualizer
+#. odoo-javascript
+#: code:addons/odoo_access_visualizer/static/src/xml/access_visualizer.xml:0
+msgid "Module category"
+msgstr "Nhóm module"
+
+#. module: odoo_access_visualizer
+#. odoo-javascript
+#: code:addons/odoo_access_visualizer/static/src/xml/access_visualizer.xml:0
+msgid "Privilege"
+msgstr "Privilege"
+
+#. module: odoo_access_visualizer
+#. odoo-javascript
+#: code:addons/odoo_access_visualizer/static/src/xml/access_visualizer.xml:0
+msgid "Individual account"
+msgstr "Tài khoản cá nhân"
+
+#. module: odoo_access_visualizer
+#. odoo-javascript
+#: code:addons/odoo_access_visualizer/static/src/xml/access_visualizer.xml:0
+msgid "Role or inherited group"
+msgstr "Vai trò hoặc group được kế thừa"
+
+#. module: odoo_access_visualizer
+#. odoo-javascript
+#: code:addons/odoo_access_visualizer/static/src/xml/access_visualizer.xml:0
+msgid "Business object or data model"
+msgstr "Business object hoặc data model"
+
+#. module: odoo_access_visualizer
+#. odoo-javascript
+#: code:addons/odoo_access_visualizer/static/src/xml/access_visualizer.xml:0
+msgid "Read, write, create, or delete access"
+msgstr "Quyền đọc, ghi, tạo hoặc xóa"
+
+#. module: odoo_access_visualizer
+#. odoo-javascript
+#: code:addons/odoo_access_visualizer/static/src/xml/access_visualizer.xml:0
+msgid "Row-level domain restriction"
+msgstr "Giới hạn domain theo từng dòng dữ liệu"
+
+#. module: odoo_access_visualizer
+#. odoo-javascript
+#: code:addons/odoo_access_visualizer/static/src/xml/access_visualizer.xml:0
+msgid "Navigation entry point"
+msgstr "Điểm truy cập điều hướng"
+
+#. module: odoo_access_visualizer
+#. odoo-javascript
+#: code:addons/odoo_access_visualizer/static/src/js/access_visualizer_action.js:0
+msgid "Read"
+msgstr "Đọc"
+
+#. module: odoo_access_visualizer
+#. odoo-javascript
+#: code:addons/odoo_access_visualizer/static/src/js/access_visualizer_action.js:0
+msgid "Write"
+msgstr "Ghi"
+
+#. module: odoo_access_visualizer
+#. odoo-javascript
+#: code:addons/odoo_access_visualizer/static/src/js/access_visualizer_action.js:0
+msgid "Create"
+msgstr "Tạo"
+
+#. module: odoo_access_visualizer
+#. odoo-javascript
+#: code:addons/odoo_access_visualizer/static/src/js/access_visualizer_action.js:0
+msgid "Delete"
+msgstr "Xóa"

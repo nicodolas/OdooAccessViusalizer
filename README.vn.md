@@ -1,6 +1,6 @@
-# Odoo Access Visualizer — Tài liệu tiếng Việt
+# Odoo Access Visualizer 19.0.1.2.0: Tài liệu tiếng Việt
 
-Odoo Access Visualizer là module Odoo 19 giúp quản trị viên hiểu hệ thống
+Odoo Access Visualizer 19.0.1.1.0 là module Odoo 19 giúp quản trị viên hiểu hệ thống
 phân quyền phức tạp bằng snapshot, bản đồ quan hệ và các cảnh báo có bằng
 chứng. Module chỉ đọc dữ liệu phân quyền; không tự ý sửa user, group, ACL,
 record rule hoặc menu.
@@ -41,7 +41,22 @@ lúc.
 - Tìm theo tên hiển thị, technical name hoặc module.
 - Chọn node để xem source record, module và metadata.
 - Graph nhỏ dùng Cytoscape.js; graph lớn dùng SVG fallback an toàn.
-- Response graph giới hạn 250 node và 1.500 edge.
+- Mỗi lần hiển thị graph giới hạn 96 node và 800 edge để nhãn không chồng lấn; hãy lọc sâu hơn khi cần xem đầy đủ.
+- Khi chọn layer hoặc object, graph mở rộng tối đa hai hop để hiển thị access path liên quan.
+- Khi chọn node, detail panel hiển thị CRUD hiệu lực, ảnh hưởng của record rule và đường dẫn bằng chứng.
+- Tab Compare hiển thị object, relationship và finding được thêm, xóa hoặc thay đổi giữa hai snapshot.
+
+### Quy trình điều tra
+
+1. Bắt đầu tại **Overview** và chọn câu hỏi hoặc finding.
+2. Mở **Explore map**, chọn layer, module, từ khóa hoặc quyền cần kiểm tra.
+3. Các record phù hợp trở thành seed của graph. Bản đồ mở rộng tối đa hai hop
+   để giữ đường User, Group, ACL, Model và Record Rule liên quan.
+4. Chọn một node để highlight access path và xem CRUD hiệu lực, ảnh hưởng của
+   record rule cùng metadata nguồn.
+
+Bộ lọc permission áp dụng cho nhóm seed Models, hỗ trợ các câu hỏi như “model
+nào có ACL cấp quyền ghi?”. Module không sửa dữ liệu phân quyền Odoo.
 
 ### Findings
 
@@ -60,31 +75,7 @@ Các nhóm finding hiện có:
 ACL được phân tích theo cơ chế cộng dồn quyền của Odoo. Record rule động
 không bị gọi là conflict chắc chắn nếu analyzer không thể chứng minh an toàn.
 
-## Cài đặt
-
-### Cài qua giao diện Odoo
-
-1. Đặt thư mục `odoo_access_visualizer` vào một thư mục thuộc `addons_path`.
-2. Khởi động lại Odoo.
-3. Bật developer mode nếu cần và cập nhật danh sách Apps.
-4. Cài **Odoo Access Visualizer**.
-5. Mở **Settings → Access Visualizer → Security Map**.
-
-Module chỉ phụ thuộc `base` và `web`.
-
-### Cài qua command line
-
-```bash
-python odoo-bin -c odoo.conf -d ten_database -i odoo_access_visualizer
-```
-
-Khi module đã cài:
-
-```bash
-python odoo-bin -c odoo.conf -d ten_database -u odoo_access_visualizer
-```
-
-## Bật giao diện tiếng Việt
+## Giao diện tiếng Việt
 
 Bản dịch nằm tại:
 
@@ -92,12 +83,8 @@ Bản dịch nằm tại:
 i18n/vi.po
 ```
 
-Thực hiện trong Odoo:
-
-1. Vào **Settings → Translations → Languages**.
-2. Cài ngôn ngữ **Vietnamese / Tiếng Việt** nếu database chưa có.
-3. Mở menu người dùng ở góc phải và chọn ngôn ngữ **Tiếng Việt**.
-4. Tải lại trang Access Visualizer.
+Khi ngôn ngữ **Vietnamese / Tiếng Việt** đã được bật trong Odoo, chọn
+**Tiếng Việt** tại menu người dùng ở góc phải rồi tải lại Access Visualizer.
 
 Odoo dùng English làm fallback nếu một chuỗi chưa có bản dịch tiếng Việt.
 Không sửa trực tiếp chuỗi tiếng Việt trong XML/JS; hãy cập nhật `i18n/vi.po`
@@ -130,16 +117,18 @@ Kiến trúc dùng snapshot để tránh quét toàn bộ security configuration
 request. Mục tiêu benchmark của project là khoảng 1.000 groups và 20.000
 ACL/rule records với scan nền dưới 5 phút.
 
-Graph lớn cần được điều tra theo layer hoặc search. Đây là chủ ý thiết kế:
+Graph lớn cần được điều tra theo layer, module, permission hoặc search. Đây là chủ ý thiết kế:
 hiển thị ít hơn nhưng hiểu được quan hệ quan trọng tốt hơn việc đổ hàng nghìn
 node lên màn hình.
+
+Mỗi response graph giới hạn 96 node và 800 edge; khi vượt giới hạn, UI hiển thị
+số node đang render trên tổng số node phù hợp.
 
 MVP chưa bao gồm:
 
 - Phân tích Field-level security.
 - Inline editing hoặc remediation.
 - Export CSV/PDF/PNG.
-- So sánh snapshot.
 - Audit log.
 - Incremental realtime scan.
 
@@ -161,7 +150,8 @@ node --check static/src/js/graph_renderer.js
 ```
 
 Pull request nên bao gồm test regression nếu thay đổi scanner, analyzer,
-permission semantics hoặc lifecycle snapshot.
+permission semantics hoặc lifecycle snapshot. CI cũng chạy kiểm tra syntax và
+test Odoo trên database tạm.
 
 ## License
 

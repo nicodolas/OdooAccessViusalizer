@@ -1,6 +1,6 @@
 {
     "name": "Odoo Access Visualizer",
-    "version": "19.0.1.0.0",
+    "version": "19.0.1.2.0",
     "category": "Administration/Security",
     "summary": "Read-only visualization and analysis of Odoo security configuration",
     "description": """

@@ -4,15 +4,17 @@
     --oav-paper: #f4f0e7;
     --oav-card: #fffdf8;
     --oav-line: #d8d1c4;
-    --oav-accent: #d7f43a;
-    --oav-accent-dark: #8fa800;
+    --oav-accent: #0f766e;
+    --oav-accent-dark: #0b5f59;
     --oav-warn: #e58d35;
     --oav-danger: #b8473e;
     --oav-muted: #7f817c;
     min-height: calc(100vh - 46px);
+    height: auto;
+    overflow: visible;
     padding: 28px 32px 64px;
     background:
-        linear-gradient(135deg, rgba(215, 244, 58, .10), transparent 28%),
+        linear-gradient(135deg, rgba(15, 118, 110, .08), transparent 28%),
         var(--oav-paper);
     color: var(--oav-ink);
     font-family: "IBM Plex Sans", "Segoe UI", sans-serif;
@@ -46,7 +48,7 @@
     .oav_last_scan { display: grid; gap: 3px; color: var(--oav-muted); font-size: .74rem; text-align: right; }
     .oav_last_scan strong { color: var(--oav-ink); font: 600 .78rem "IBM Plex Mono", monospace; }
     .oav_btn { border: 1px solid var(--oav-ink); border-radius: 3px; padding: 9px 14px; font-weight: 700; }
-    .oav_btn_accent { background: var(--oav-accent); color: var(--oav-ink); box-shadow: 4px 4px 0 var(--oav-ink); }
+    .oav_btn_accent { background: var(--oav-accent); color: #fff; border-color: var(--oav-accent); box-shadow: 4px 4px 0 var(--oav-ink); }
     .oav_btn_accent:hover { transform: translate(2px, 2px); box-shadow: 2px 2px 0 var(--oav-ink); }
     .oav_btn_ghost { background: transparent; border-color: var(--oav-line); }
     .oav_alert { margin: 20px 0 0; display: flex; gap: 8px; border-radius: 3px; }
@@ -97,6 +99,7 @@
     .oav_path_step strong { font-size: .82rem; }
     .oav_path_type { color: var(--oav-muted); font: .65rem "IBM Plex Mono", monospace; text-transform: uppercase; }
     .oav_panel_header { display: flex; align-items: end; justify-content: space-between; gap: 16px; margin-bottom: 16px; }
+    .oav_panel_header h2 { max-width: 560px; }
     .oav_link_button { border: 0; background: transparent; color: var(--oav-accent-dark); font-weight: 700; cursor: pointer; }
     .oav_findings { display: grid; gap: 8px; }
     .oav_finding { display: grid; grid-template-columns: 82px 1fr 30px; gap: 13px; align-items: center; width: 100%; padding: 14px; border: 1px solid var(--oav-line); border-left: 5px solid var(--oav-warn); background: #fffdf8; color: var(--oav-ink); text-align: left; cursor: pointer; }
@@ -109,33 +112,80 @@
     .oav_finding_body span, .oav_finding_body small { color: var(--oav-muted); line-height: 1.4; }
     .oav_finding_arrow { color: var(--oav-accent-dark); font-size: 1.2rem; }
     .oav_no_findings { padding: 24px 0; color: var(--oav-muted); }
-    .oav_explorer_bar { display: flex; justify-content: space-between; align-items: end; gap: 24px; margin-bottom: 18px; padding: 22px; background: var(--oav-ink); color: #fffdf8; }
-    .oav_explorer_bar p { color: #bec5bd; }
-    .oav_explorer_controls { display: grid; grid-template-columns: 150px 240px auto auto; gap: 8px; min-width: 600px; }
-    .oav_explorer_controls .form-select, .oav_explorer_controls .form-control { min-height: 38px; border-color: #61706d; background: #25323a; color: #fffdf8; }
+    .oav_explorer_bar { display: flex; justify-content: space-between; align-items: end; gap: 24px; margin-bottom: 18px; padding: 22px; background: #fff; color: var(--oav-ink); border: 1px solid var(--oav-line); box-shadow: 0 8px 24px rgba(23, 32, 42, .06); }
+    .oav_explorer_bar h2 { color: var(--oav-ink); }
+    .oav_explorer_bar p { color: var(--oav-ink-soft); }
+    .oav_explorer_controls { display: grid; grid-template-columns: 140px minmax(160px, 1fr) 140px 140px 140px auto auto; gap: 8px; min-width: 900px; }
+    .oav_explorer_controls .form-select, .oav_explorer_controls .form-control { min-height: 38px; border-color: #aebbb8; background: #fff; color: var(--oav-ink); }
+    .oav_explorer_controls .form-select option { background: #fff; color: var(--oav-ink); }
+    .oav_explorer_controls .form-select:focus, .oav_explorer_controls .form-control:focus { border-color: var(--oav-accent); box-shadow: 0 0 0 3px rgba(15, 118, 110, .16); }
+    .oav_legend { margin-bottom: 18px; padding: 16px 20px; background: #fbfdfc; border: 1px solid var(--oav-line); }
+    .oav_legend_header { display: flex; align-items: end; justify-content: space-between; gap: 16px; margin-bottom: 12px; }
+    .oav_legend_header h3 { margin-top: 4px; font-size: 1rem; }
+    .oav_legend_hint { color: var(--oav-muted); font-size: .78rem; }
+    .oav_legend_table { width: 100%; border-collapse: collapse; font-size: .78rem; }
+    .oav_legend_table th { color: var(--oav-muted); font: 700 .65rem "IBM Plex Mono", monospace; letter-spacing: .08em; text-align: left; text-transform: uppercase; }
+    .oav_legend_table td, .oav_legend_table th { padding: 7px 10px; border-bottom: 1px solid #e9e5dc; }
+    .oav_legend_table td:first-child { width: 42px; }
+    .oav_legend_table td:nth-child(2) { width: 25%; font-weight: 700; }
+    .oav_legend_symbol { display: inline-block; width: 14px; height: 14px; background: #64748b; vertical-align: middle; }
+    .oav_legend_category { background: #2563eb; transform: rotate(45deg); }
+    .oav_legend_privilege { background: #7c3aed; border-radius: 3px; }
+    .oav_legend_user { background: #ca8a04; border-radius: 50%; }
+    .oav_legend_group { background: #16a34a; border-radius: 50%; }
+    .oav_legend_model { background: #ea580c; border-radius: 2px; }
+    .oav_legend_acl { background: transparent; border: 3px solid #64748b; border-radius: 50%; }
+    .oav_legend_rule { width: 0; height: 0; background: transparent; border-right: 8px solid transparent; border-bottom: 14px solid #dc2626; border-left: 8px solid transparent; }
+    .oav_legend_menu { background: #92400e; transform: rotate(45deg); }
+    .oav_edge_legend { display: flex; flex-wrap: wrap; gap: 16px; margin-top: 12px; color: var(--oav-ink-soft); font-size: .76rem; }
+    .oav_legend_line { display: inline-block; width: 25px; margin: 0 5px 3px 0; border-top: 2px solid #809692; vertical-align: middle; }
+    .oav_line_implied { border-color: var(--oav-accent); }
+    .oav_line_applies { border-color: #f19b4b; }
     .oav_content { display: grid; grid-template-columns: minmax(0, 1fr) 320px; gap: 16px; }
     .oav_graph_panel, .oav_detail_panel { min-width: 0; padding: 18px; border: 1px solid var(--oav-line); background: var(--oav-card); }
-    .oav_graph_panel { background: #10191e; color: #fffdf8; }
-    .oav_map_hint { color: #9eaaa2; font-size: .75rem; }
-    .oav_graph { min-height: 560px; overflow: hidden; border: 1px solid #31444a; background: #10191e; }
-    .oav_graph_svg { width: 100%; height: 560px; cursor: grab; }
+    .oav_graph_panel { background: #fff; color: var(--oav-ink); }
+    .oav_matrix_panel { padding: 22px; border: 1px solid var(--oav-line); background: var(--oav-card); }
+    .oav_permission_matrix { width: 100%; border-collapse: collapse; font-size: .82rem; }
+    .oav_permission_matrix th { color: var(--oav-muted); font: 700 .67rem "IBM Plex Mono", monospace; letter-spacing: .08em; text-align: left; text-transform: uppercase; }
+    .oav_permission_matrix td, .oav_permission_matrix th { padding: 12px; border-bottom: 1px solid var(--oav-line); }
+    .oav_matrix_yes, .oav_matrix_no { display: inline-grid; place-items: center; width: 23px; height: 23px; border-radius: 50%; font-weight: 700; }
+    .oav_matrix_yes { background: #e1f4ef; color: #0b5f59; }
+    .oav_matrix_no { color: #9aa29f; }
+    .oav_map_hint { color: var(--oav-ink-soft); font-size: .75rem; }
+    .oav_graph { height: clamp(420px, 58vh, 620px); min-height: 420px; overflow: hidden; border: 1px solid #cbd7d4; background-color: #f8fbfa; background-image: linear-gradient(rgba(15, 118, 110, .06) 1px, transparent 1px), linear-gradient(90deg, rgba(15, 118, 110, .06) 1px, transparent 1px); background-size: 24px 24px; }
+    .oav_graph_svg { width: 100%; height: 100%; cursor: grab; }
     .oav_graph_svg:active { cursor: grabbing; }
-    .oav_edge { stroke: #61746f; stroke-width: 1.2; opacity: .7; }
+    .oav_edge { stroke: #809692; stroke-width: 1.2; opacity: .78; }
     .oav_edge_implied { stroke: var(--oav-accent); stroke-width: 2; }
     .oav_edge_applies, .oav_edge_protects { stroke: #f19b4b; }
     .oav_node { outline: none; cursor: pointer; }
     .oav_node:focus .oav_node_shape, .oav_node:hover .oav_node_shape { stroke: var(--oav-accent); stroke-width: 3; }
-    .oav_node_label { font-size: 11px; fill: #e5ebe2; pointer-events: none; }
+    .oav_node.is_selected .oav_node_shape { stroke: var(--oav-accent); stroke-width: 5; }
+    .oav_node.is_related .oav_node_shape { stroke: #99c9c3; stroke-width: 3; }
+    .oav_node.is_dimmed, .oav_edge.is_dimmed { opacity: .16; }
+    .oav_edge.is_path_edge { stroke: var(--oav-accent); stroke-width: 3; opacity: 1; }
+    .oav_node_label { font-size: 11px; fill: var(--oav-ink); pointer-events: none; }
+    .oav_dense_label { font-size: 9px; }
     .oav_detail_panel { min-height: 560px; }
+    .oav_detail_toolbar { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
     .oav_detail_panel h2 { margin: 5px 0 20px; font-size: 1.18rem; }
     .oav_detail h3 { font-size: 1.2rem; }
     .oav_detail_type { display: inline-block; margin: 8px 0; padding: 4px 7px; background: var(--oav-accent); font: 700 .65rem "IBM Plex Mono", monospace; text-transform: uppercase; }
     .oav_detail dl { display: grid; grid-template-columns: 64px 1fr; gap: 7px; margin: 15px 0; font-size: .82rem; }
     .oav_detail dt { color: var(--oav-muted); }
     .oav_detail dd { margin: 0; overflow-wrap: anywhere; }
+    .oav_detail_section { margin-top: 18px; }
+    .oav_detail_label { margin-bottom: 8px; color: var(--oav-ink-soft); font: 700 .68rem "IBM Plex Mono", monospace; letter-spacing: .08em; text-transform: uppercase; }
+    .oav_access_modes { display: flex; flex-wrap: wrap; gap: 6px; }
+    .oav_mode_chip { padding: 5px 8px; border: 1px solid #9bc9c4; border-radius: 999px; background: #e8f6f3; color: #0b5f59; font-size: .74rem; font-weight: 700; }
+    .oav_detail_note { color: var(--oav-ink-soft); font-size: .8rem; line-height: 1.45; }
+    .oav_relationships { display: grid; gap: 6px; margin: 0; padding: 0; list-style: none; }
+    .oav_relationship { display: grid; grid-template-columns: auto 1fr; gap: 2px 7px; padding: 7px 8px; border-left: 3px solid var(--oav-accent); background: #f5faf8; font-size: .78rem; }
+    .oav_relationship_edge { color: var(--oav-accent-dark); font: 700 .64rem "IBM Plex Mono", monospace; text-transform: uppercase; }
+    .oav_relationship small { grid-column: 2; color: var(--oav-muted); }
     .oav_metadata { max-height: 260px; overflow: auto; padding: 10px; background: #f2eee5; color: var(--oav-ink); font-size: .7rem; }
     .oav_detail_empty { margin-top: 30px; color: var(--oav-muted); line-height: 1.55; }
-    .oav_budget_notice { margin-bottom: 10px; padding: 9px 12px; background: #49361f; color: #ffd39e; font-size: .8rem; }
+    .oav_budget_notice { margin-bottom: 10px; padding: 9px 12px; background: #fff4d6; border: 1px solid #e4bf69; color: #6b4d10; font-size: .8rem; }
     .oav_focus_empty { display: grid; justify-items: center; gap: 9px; min-height: 350px; padding: 80px 22px; border: 1px dashed var(--oav-line); background: var(--oav-card); text-align: center; }
     .oav_focus_icon { display: grid; place-items: center; width: 64px; height: 64px; background: var(--oav-ink); color: var(--oav-accent); font-size: 2.5rem; }
     .oav_focus_empty h3 { font-size: 1.2rem; }
@@ -150,6 +200,8 @@
         .oav_content { grid-template-columns: 1fr; }
         .oav_explorer_bar { display: block; }
         .oav_explorer_controls { grid-template-columns: 1fr 1fr; min-width: 0; margin-top: 18px; }
+        .oav_legend_header { display: block; }
+        .oav_legend_hint { display: block; margin-top: 6px; }
     }
     @media (max-width: 640px) {
         .oav_header { display: block; }
@@ -158,4 +210,264 @@
         .oav_explorer_controls { grid-template-columns: 1fr; }
         .oav_finding { grid-template-columns: 70px 1fr 20px; }
     }
+}
+
+/* Editorial Security Observatory visual layer.
+   The data model stays unchanged; this layer gives the admin a calmer,
+   more premium reading surface around the investigation tools. */
+.oav_root {
+    --oav-paper: #f6f8f5;
+    --oav-card: rgba(255, 255, 255, .88);
+    --oav-ink: #12252a;
+    --oav-ink-soft: #486268;
+    --oav-muted: #74878a;
+    --oav-line: #dce7e4;
+    --oav-accent: #087f73;
+    --oav-accent-dark: #07584f;
+    --oav-warn: #d18a32;
+    --oav-danger: #c5534d;
+    position: relative;
+    isolation: isolate;
+    padding: 34px clamp(20px, 4vw, 64px) 80px;
+    background:
+        radial-gradient(circle at 92% 4%, rgba(8, 127, 115, .13), transparent 20rem),
+        radial-gradient(circle at 4% 22%, rgba(218, 236, 227, .8), transparent 24rem),
+        var(--oav-paper);
+    font-family: "IBM Plex Sans", "Segoe UI", sans-serif;
+}
+
+.oav_root::before {
+    position: absolute;
+    z-index: -1;
+    top: 0;
+    right: 0;
+    left: 0;
+    height: 5px;
+    background: linear-gradient(90deg, var(--oav-accent-dark), #83c9b9 52%, #e7b56e);
+    content: "";
+}
+
+.oav_root .oav_main { max-width: 1500px; }
+.oav_root .oav_header {
+    align-items: center;
+    padding: 18px 0 30px;
+    border-bottom: 0;
+}
+.oav_root .oav_brand h1 {
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: clamp(2.7rem, 6vw, 5.6rem);
+    font-weight: 500;
+    letter-spacing: -.075em;
+    line-height: .9;
+    text-transform: none;
+}
+.oav_root .oav_brand p {
+    max-width: 520px;
+    margin-top: 16px;
+    color: var(--oav-ink-soft);
+    font-size: 1.08rem;
+    letter-spacing: -.01em;
+}
+.oav_root .oav_kicker { letter-spacing: .18em; }
+.oav_root .oav_header_actions { align-items: center; }
+.oav_root .oav_last_scan {
+    padding-right: 18px;
+    border-right: 1px solid var(--oav-line);
+}
+.oav_root .oav_btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 42px;
+    border-radius: 999px;
+    padding: 11px 18px;
+    white-space: nowrap;
+    transition: transform .18s ease, box-shadow .18s ease, background .18s ease;
+}
+.oav_root .oav_btn i { font-size: .82em; }
+.oav_root .oav_btn:focus-visible,
+.oav_root .oav_link_button:focus-visible,
+.oav_root .oav_tabs button:focus-visible,
+.oav_root .oav_start_card:focus-visible,
+.oav_root .oav_finding:focus-visible {
+    outline: 3px solid rgba(8, 127, 115, .28);
+    outline-offset: 3px;
+}
+.oav_root .oav_btn_accent {
+    box-shadow: 0 10px 24px rgba(8, 127, 115, .2);
+}
+.oav_root .oav_btn_accent:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 14px 28px rgba(8, 127, 115, .28);
+}
+.oav_root .oav_btn_accent:active { transform: translateY(0); box-shadow: 0 5px 12px rgba(8, 127, 115, .18); }
+.oav_root .oav_btn_ghost {
+    border-color: #cbdcd8;
+    background: rgba(255,255,255,.7);
+    color: var(--oav-ink-soft);
+}
+.oav_root .oav_btn_ghost:hover { border-color: #8bc8bc; background: #fff; color: var(--oav-accent-dark); }
+.oav_root .oav_status_line {
+    margin: 0 0 18px;
+    padding: 10px 14px;
+    border: 1px solid var(--oav-line);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, .58);
+}
+.oav_root .oav_tabs {
+    gap: 8px;
+    margin-bottom: 26px;
+    padding: 5px;
+    border: 1px solid var(--oav-line);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, .62);
+}
+.oav_root .oav_tabs button {
+    border-radius: 999px;
+    padding: 9px 18px 10px;
+}
+.oav_root .oav_tabs button.is_active {
+    background: var(--oav-ink);
+    color: #fff;
+}
+.oav_root .oav_tabs button.is_active::after { display: none; }
+.oav_root .oav_kpis { gap: 14px; }
+.oav_root .oav_kpi,
+.oav_root .oav_start_panel,
+.oav_root .oav_path_panel,
+.oav_root .oav_findings_panel,
+.oav_root .oav_explorer_bar,
+.oav_root .oav_legend,
+.oav_root .oav_graph_panel,
+.oav_root .oav_detail_panel,
+.oav_root .oav_matrix_panel {
+    border: 1px solid rgba(206, 222, 218, .95);
+    border-radius: 18px;
+    box-shadow: 0 14px 34px rgba(25, 59, 58, .06);
+}
+.oav_root .oav_kpi {
+    min-height: 148px;
+    padding: 22px;
+    background: var(--oav-card);
+}
+.oav_root .oav_kpi_ink {
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(145deg, #12252a, #1e4b4b);
+}
+.oav_root .oav_kpi_ink::after {
+    position: absolute;
+    right: -25px;
+    bottom: -42px;
+    width: 130px;
+    height: 130px;
+    border: 1px solid rgba(255,255,255,.16);
+    border-radius: 50%;
+    content: "";
+}
+.oav_root .oav_kpi strong { font-size: 2.7rem; }
+.oav_root .oav_start_panel,
+.oav_root .oav_path_panel,
+.oav_root .oav_findings_panel { padding: 28px; }
+.oav_root .oav_start_card {
+    min-height: 182px;
+    padding: 20px;
+    border-radius: 14px;
+    background: rgba(255,255,255,.48);
+    transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease;
+}
+.oav_root .oav_start_card:hover {
+    border-color: #8bc8bc;
+    background: #fff;
+    box-shadow: 0 12px 24px rgba(25, 59, 58, .1);
+    transform: translateY(-4px);
+}
+.oav_root .oav_explorer_bar {
+    align-items: center;
+    padding: 24px 26px;
+    background: linear-gradient(135deg, #fff, #f0f8f5);
+}
+.oav_root .oav_explorer_bar h2 { font-family: Georgia, "Times New Roman", serif; font-size: 1.65rem; font-weight: 500; }
+.oav_root .oav_explorer_controls .form-select,
+.oav_root .oav_explorer_controls .form-control {
+    border-radius: 10px;
+    min-height: 42px;
+    padding-right: 12px;
+    padding-left: 12px;
+    box-shadow: 0 3px 10px rgba(25, 59, 58, .04);
+}
+.oav_root .oav_explorer_controls .form-select {
+    cursor: pointer;
+    font-weight: 600;
+}
+.oav_root .oav_explorer_controls .form-control::placeholder { color: #8a9b9d; }
+.oav_root .oav_explorer_controls .form-select:disabled { cursor: not-allowed; opacity: .55; background: #eef3f1; }
+.oav_root .oav_filter_hint { grid-column: 1 / -1; color: var(--oav-muted); font-size: .7rem; }
+.oav_root .oav_explorer_controls .form-select:hover,
+.oav_root .oav_explorer_controls .form-control:hover { border-color: #8bc8bc; }
+.oav_root .oav_legend { padding: 20px 24px; background: rgba(255,255,255,.72); }
+.oav_root .oav_legend_table td,
+.oav_root .oav_legend_table th { padding: 8px 10px; }
+.oav_root .oav_content { gap: 20px; }
+.oav_root .oav_graph_panel,
+.oav_root .oav_detail_panel,
+.oav_root .oav_matrix_panel { background: rgba(255,255,255,.9); }
+.oav_root .oav_graph_panel { padding: 22px; }
+.oav_root .oav_detail_panel { padding: 22px; }
+.oav_root .oav_graph {
+    border-radius: 14px;
+    background-color: #f5faf8;
+    background-size: 28px 28px;
+    box-shadow: inset 0 0 0 1px rgba(8,127,115,.03);
+}
+.oav_root .oav_detail_type { border-radius: 999px; background: #dff3ee; color: var(--oav-accent-dark); }
+.oav_root .oav_relationship { border-radius: 9px; border-left-width: 4px; }
+.oav_root .oav_link_button {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 9px;
+    border: 1px solid #cbdcd8;
+    border-radius: 999px;
+    background: #fff;
+    color: var(--oav-accent-dark);
+    font-size: .72rem;
+}
+.oav_root .oav_link_button:hover { background: #e8f6f3; border-color: #8bc8bc; }
+.oav_root .oav_permission_matrix { overflow: hidden; border-radius: 12px; }
+.oav_root .oav_permission_matrix tbody tr:hover { background: #f2f9f6; }
+.oav_root .oav_compare_select { min-width: 260px; }
+.oav_root .oav_compare_content { display: grid; gap: 18px; }
+.oav_root .oav_compare_summary { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+.oav_root .oav_compare_card { display: grid; gap: 6px; padding: 20px; border: 1px solid var(--oav-line); border-radius: 16px; background: #fff; box-shadow: 0 10px 24px rgba(25,59,58,.05); }
+.oav_root .oav_compare_card strong { font: 700 2.2rem "IBM Plex Mono", monospace; color: var(--oav-accent-dark); }
+.oav_root .oav_compare_card span { color: var(--oav-muted); font-size: .78rem; }
+.oav_root .oav_compare_panel { padding: 22px; border: 1px solid var(--oav-line); border-radius: 18px; background: #fff; }
+.oav_root .oav_compare_columns { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+.oav_root .oav_compare_columns h3 { font-size: .95rem; }
+.oav_root .oav_compare_columns ul { display: grid; gap: 7px; margin: 10px 0 0; padding: 0; list-style: none; }
+.oav_root .oav_compare_columns li { display: grid; grid-template-columns: 25px 1fr auto; gap: 8px; align-items: center; padding: 9px; border-radius: 9px; background: #f6faf8; font-size: .8rem; }
+.oav_root .oav_compare_columns small { color: var(--oav-muted); }
+.oav_root .oav_change_badge { display: inline-grid; place-items: center; width: 22px; height: 22px; border-radius: 50%; font-weight: 800; }
+.oav_root .oav_change_added { background: #dff3ee; color: var(--oav-accent-dark); }
+.oav_root .oav_change_removed { background: #fae6e4; color: var(--oav-danger); }
+
+@media (max-width: 760px) {
+    .oav_root { padding-right: 16px; padding-left: 16px; }
+    .oav_root .oav_header { display: block; }
+    .oav_root .oav_header_actions { justify-content: space-between; margin-top: 24px; }
+    .oav_root .oav_last_scan { text-align: left; }
+    .oav_root .oav_explorer_controls { grid-template-columns: 1fr; }
+    .oav_root .oav_compare_summary, .oav_root .oav_compare_columns { grid-template-columns: 1fr; }
+    .oav_root .oav_tabs { overflow-x: auto; }
+}
+
+// The Odoo client action manager owns the viewport. Keep it scrollable when
+// this long-running visualizer is mounted inside it.
+.o_action_manager:has(.oav_root) {
+    height: 100% !important;
+    min-height: 0 !important;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
 }

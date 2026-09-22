@@ -6,7 +6,7 @@
                 <div class="oav_brand">
                     <div class="oav_kicker">SECURITY CONTROL ROOM · ODOO 19</div>
                     <h1>Access Visualizer</h1>
-                    <p>Understand who can do what — and why.</p>
+                    <p>Understand who can do what and why.</p>
                 </div>
                 <div class="oav_header_actions">
                     <div t-if="state.dashboard?.latest" class="oav_last_scan">
@@ -52,6 +52,7 @@
                     <button data-tab="findings" t-att-class="state.activeTab === 'findings' ? 'is_active' : ''" t-on-click="setTab">
                         Findings <span class="oav_tab_count"><t t-esc="state.dashboard.latest.finding_count"/></span>
                     </button>
+                    <button data-tab="compare" t-att-class="state.activeTab === 'compare' ? 'is_active' : ''" t-on-click="setTab">Compare</button>
                 </nav>
 
                 <section t-if="state.activeTab === 'overview'" class="oav_overview">
@@ -150,7 +151,7 @@
                             <p>Pick one layer or search for a specific object. The map stays focused on what you asked.</p>
                         </div>
                         <div class="oav_explorer_controls">
-                            <select class="form-select" t-on-change="chooseLayer">
+                            <select class="form-select" t-att-value="state.filters.node_types[0] || ''" t-on-change="chooseLayer">
                                 <option value="">Choose a layer…</option>
                                 <option value="user">Users</option>
                                 <option value="group">Security groups</option>
@@ -160,21 +161,81 @@
                                 <option value="menu">Menus</option>
                             </select>
                             <input class="form-control" type="search" placeholder="Search a name or technical key…" t-model="state.filters.search"/>
-                            <button class="btn oav_btn oav_btn_accent" t-on-click="applyGraphFilters">Show map</button>
-                            <button class="btn oav_btn oav_btn_ghost" t-on-click="clearGraphFilters">Reset</button>
+                            <input class="form-control" type="search" placeholder="Module (optional)" t-model="state.filters.module"/>
+                            <select class="form-select" t-att-value="state.filters.permission || ''" t-on-change="choosePermission" t-att-disabled="state.filters.node_types[0] !== 'model'">
+                                <option value="">Any permission</option>
+                                <option value="read">Can read</option>
+                                <option value="write">Can write</option>
+                                <option value="create">Can create</option>
+                                <option value="delete">Can delete</option>
+                            </select>
+                            <small class="oav_filter_hint" t-if="state.filters.node_types[0] !== 'model'">Permission filters apply to Models.</small>
+                            <select class="form-select" t-att-value="state.viewMode" t-on-change="chooseViewMode">
+                                <option value="path">Access path</option>
+                                <option value="neighborhood">Neighborhood</option>
+                                <option value="matrix">Permission matrix</option>
+                            </select>
+                            <button class="btn oav_btn oav_btn_accent" t-on-click="applyGraphFilters"><i class="fa fa-crosshairs" aria-hidden="true"/> <span>Show map</span></button>
+                            <button class="btn oav_btn oav_btn_ghost" t-on-click="clearGraphFilters"><i class="fa fa-rotate-left" aria-hidden="true"/> <span>Reset</span></button>
                         </div>
                     </div>
+                    <section class="oav_legend" aria-label="Graph marking rules">
+                        <div class="oav_legend_header">
+                            <div>
+                                <div class="oav_kicker">MARKING RULES</div>
+                                <h3>How to read the map</h3>
+                            </div>
+                            <span class="oav_legend_hint">Color identifies the object type. Lines identify the relationship.</span>
+                        </div>
+                        <table class="oav_legend_table">
+                            <thead><tr><th>Symbol</th><th>Object</th><th>Meaning</th></tr></thead>
+                            <tbody>
+                                <tr><td><span class="oav_legend_symbol oav_legend_category" aria-hidden="true"/></td><td>Module category</td><td>Application or module area</td></tr>
+                                <tr><td><span class="oav_legend_symbol oav_legend_privilege" aria-hidden="true"/></td><td>Privilege</td><td>Named access privilege</td></tr>
+                                <tr><td><span class="oav_legend_symbol oav_legend_user" aria-hidden="true"/></td><td>User</td><td>Individual account</td></tr>
+                                <tr><td><span class="oav_legend_symbol oav_legend_group" aria-hidden="true"/></td><td>Security group</td><td>Role or inherited group</td></tr>
+                                <tr><td><span class="oav_legend_symbol oav_legend_model" aria-hidden="true"/></td><td>Model</td><td>Business object or data model</td></tr>
+                                <tr><td><span class="oav_legend_symbol oav_legend_acl" aria-hidden="true"/></td><td>Access control</td><td>Read, write, create, or delete access</td></tr>
+                                <tr><td><span class="oav_legend_symbol oav_legend_rule" aria-hidden="true"/></td><td>Record rule</td><td>Row-level domain restriction</td></tr>
+                                <tr><td><span class="oav_legend_symbol oav_legend_menu" aria-hidden="true"/></td><td>Menu</td><td>Navigation entry point</td></tr>
+                            </tbody>
+                        </table>
+                        <div class="oav_edge_legend" aria-label="Relationship line rules">
+                            <span><i class="oav_legend_line oav_line_default"/> Relationship</span>
+                            <span><i class="oav_legend_line oav_line_implied"/> Implied access</span>
+                            <span><i class="oav_legend_line oav_line_applies"/> Applies or protects</span>
+                        </div>
+                    </section>
                     <div t-if="state.graph.needs_focus" class="oav_focus_empty">
                         <div class="oav_focus_icon">⌁</div>
                         <h3>The full system is intentionally not shown at once</h3>
                         <p>Choose a layer or search above. Focused maps are easier to read and safer for large databases.</p>
+                    </div>
+                    <div t-elif="state.viewMode === 'matrix'" class="oav_matrix_panel">
+                        <div class="oav_panel_header">
+                            <div><div class="oav_kicker">PERMISSION MATRIX</div><h2>Who can do what</h2></div>
+                            <span class="oav_map_hint">Click a model filter to narrow the matrix.</span>
+                        </div>
+                        <table class="oav_permission_matrix">
+                            <thead><tr><th>Group</th><th>Model</th><th>Read</th><th>Write</th><th>Create</th><th>Delete</th></tr></thead>
+                            <tbody>
+                                <tr t-foreach="getPermissionMatrix()" t-as="row" t-key="row.key">
+                                    <td><strong><t t-esc="row.group"/></strong></td><td><t t-esc="row.model"/></td>
+                                    <td><span t-att-class="row.read ? 'oav_matrix_yes' : 'oav_matrix_no'"><t t-esc="row.read ? '✓' : '—'"/></span></td>
+                                    <td><span t-att-class="row.write ? 'oav_matrix_yes' : 'oav_matrix_no'"><t t-esc="row.write ? '✓' : '—'"/></span></td>
+                                    <td><span t-att-class="row.create ? 'oav_matrix_yes' : 'oav_matrix_no'"><t t-esc="row.create ? '✓' : '—'"/></span></td>
+                                    <td><span t-att-class="row.delete ? 'oav_matrix_yes' : 'oav_matrix_no'"><t t-esc="row.delete ? '✓' : '—'"/></span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <p t-if="!getPermissionMatrix().length" class="oav_detail_empty">No group to model ACL path is available for this focus.</p>
                     </div>
                     <div t-else="" class="oav_content">
                         <section class="oav_graph_panel">
                             <div class="oav_panel_header">
                                 <div>
                                     <div class="oav_kicker">RELATIONSHIP MAP</div>
-                                    <h2><t t-esc="state.graph.total_nodes"/> objects in focus</h2>
+                                    <h2><t t-esc="getGraphSummary(state.graph)"/></h2>
                                 </div>
                                 <span class="oav_map_hint">Scroll to zoom · drag to pan · select a node</span>
                             </div>
@@ -182,7 +243,10 @@
                             <div class="oav_graph" t-ref="graph"/>
                         </section>
                         <aside class="oav_detail_panel">
-                            <div class="oav_kicker">SELECTED OBJECT</div>
+                            <div class="oav_detail_toolbar">
+                                <div class="oav_kicker">SELECTED OBJECT</div>
+                                <button t-if="state.selectedNode" class="oav_link_button" t-on-click="clearSelection"><i class="fa fa-eraser" aria-hidden="true"/> Clear highlight</button>
+                            </div>
                             <h2>Why this object matters</h2>
                             <div t-if="state.selectedNode" class="oav_detail">
                                 <h3><t t-esc="state.selectedNode.node.label"/></h3>
@@ -191,10 +255,68 @@
                                     <dt>Source</dt><dd><t t-esc="state.selectedNode.node.source_model"/> #<t t-esc="state.selectedNode.node.source_id"/></dd>
                                     <dt>Module</dt><dd><t t-esc="state.selectedNode.node.module"/></dd>
                                 </dl>
+                                <div class="oav_detail_section" t-if="getAccessModes(state.selectedNode.access_summary).length">
+                                    <div class="oav_detail_label">Effective access</div>
+                                    <div class="oav_access_modes">
+                                        <span t-foreach="getAccessModes(state.selectedNode.access_summary)" t-as="mode" t-key="mode.key" class="oav_mode_chip">
+                                            <i class="fa fa-check"/> <t t-esc="mode.label"/>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="oav_detail_section" t-if="state.selectedNode.access_summary?.rule_count">
+                                    <div class="oav_detail_label">Record rule impact</div>
+                                    <p class="oav_detail_note"><t t-esc="state.selectedNode.access_summary.rule_count"/> related record rule(s) constrain this path.</p>
+                                </div>
+                                <div class="oav_detail_section" t-if="state.selectedNode.relationships?.length">
+                                    <div class="oav_detail_label">Evidence path</div>
+                                    <ul class="oav_relationships">
+                                        <li t-foreach="state.selectedNode.relationships" t-as="relationship" t-key="`${relationship.edge_type}-${relationship.node.id}`" class="oav_relationship">
+                                            <span class="oav_relationship_edge"><t t-esc="relationship.edge_type"/></span>
+                                            <span><t t-esc="relationship.node.label"/></span>
+                                            <small><t t-esc="relationship.node.type"/></small>
+                                        </li>
+                                    </ul>
+                                </div>
                                 <pre class="oav_metadata"><t t-esc="formatJson(state.selectedNode.node.metadata)"/></pre>
                             </div>
                             <p t-else="" class="oav_detail_empty">Click any node to see its source, relationships and evidence.</p>
                         </aside>
+                    </div>
+                </section>
+
+                <section t-if="state.activeTab === 'compare'" class="oav_compare_view">
+                    <div class="oav_explorer_bar compact_bar">
+                        <div>
+                            <div class="oav_kicker">CHANGE INTELLIGENCE</div>
+                            <h2>Compare security snapshots</h2>
+                            <p>See what changed since the selected completed snapshot.</p>
+                        </div>
+                        <select class="form-select oav_compare_select" t-att-value="state.compareBaselineId || ''" t-on-change="chooseCompareBaseline">
+                            <option value="">Choose baseline snapshot</option>
+                            <option t-foreach="state.dashboard.recent_snapshots || []" t-as="snapshot" t-key="snapshot.id" t-if="snapshot.id !== state.dashboard.latest.id" t-att-value="snapshot.id">
+                                <t t-esc="snapshot.name"/>
+                            </option>
+                        </select>
+                    </div>
+                    <div t-if="!state.compare" class="oav_focus_empty">
+                        <div class="oav_focus_icon">↔</div>
+                        <h3>Choose a baseline to see changes</h3>
+                        <p>The comparison is read-only and includes nodes, relationships and findings.</p>
+                    </div>
+                    <div t-else="" class="oav_compare_content">
+                        <div class="oav_compare_summary">
+                            <article class="oav_compare_card"><strong><t t-esc="state.compare.summary.nodes_added"/></strong><span>Objects added</span></article>
+                            <article class="oav_compare_card"><strong><t t-esc="state.compare.summary.nodes_removed"/></strong><span>Objects removed</span></article>
+                            <article class="oav_compare_card"><strong><t t-esc="state.compare.summary.nodes_changed"/></strong><span>Objects changed</span></article>
+                            <article class="oav_compare_card"><strong><t t-esc="state.compare.summary.findings_added"/></strong><span>New findings</span></article>
+                        </div>
+                        <section class="oav_compare_panel">
+                            <div class="oav_panel_header"><div><div class="oav_kicker">OBJECT CHANGES</div><h2>What moved</h2></div></div>
+                            <div class="oav_compare_columns">
+                                <div><h3>Added</h3><ul><li t-foreach="state.compare.nodes.added" t-as="item" t-key="`a-${item.id}`"><span class="oav_change_badge oav_change_added">+</span><t t-esc="item.label"/><small><t t-esc="item.type"/></small></li></ul></div>
+                                <div><h3>Removed</h3><ul><li t-foreach="state.compare.nodes.removed" t-as="item" t-key="`r-${item.id}`"><span class="oav_change_badge oav_change_removed">−</span><t t-esc="item.label"/><small><t t-esc="item.type"/></small></li></ul></div>
+                            </div>
+                        </section>
                     </div>
                 </section>
 
