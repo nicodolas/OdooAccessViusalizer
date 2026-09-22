@@ -51,7 +51,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          path: addon
+          path: addon/odoo_access_visualizer
       - name: Checkout Odoo 19
         uses: actions/checkout@v4
         with:
