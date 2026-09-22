@@ -956,6 +956,12 @@ msgstr "Vì sao object này quan trọng"
 #. module: odoo_access_visualizer
 #. odoo-javascript
 #: code:addons/odoo_access_visualizer/static/src/xml/access_visualizer.xml:0
+msgid "Understand who can do what and why."
+msgstr "Hiểu ai có thể làm gì và vì sao."
+
+#. module: odoo_access_visualizer
+#. odoo-javascript
+#: code:addons/odoo_access_visualizer/static/src/xml/access_visualizer.xml:0
 msgid "deterministic priority signals"
 msgstr "tín hiệu ưu tiên có bằng chứng xác định"
 
@@ -1036,12 +1042,6 @@ msgstr "Đường dẫn bằng chứng"
 #: code:addons/odoo_access_visualizer/static/src/xml/access_visualizer.xml:0
 msgid "Module category"
 msgstr "Nhóm module"
-
-#. module: odoo_access_visualizer
-#. odoo-javascript
-#: code:addons/odoo_access_visualizer/static/src/xml/access_visualizer.xml:0
-msgid "Privilege"
-msgstr "Privilege"
 
 #. module: odoo_access_visualizer
 #. odoo-javascript

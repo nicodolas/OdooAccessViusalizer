@@ -71,6 +71,7 @@ jobs:
       - name: Run Odoo module tests
         working-directory: odoo
         run: |
+          set -o pipefail
           python odoo-bin \
             --db_host=127.0.0.1 --db_port=5432 \
             --db_user=odoo --db_password=odoo \
@@ -78,4 +79,5 @@ jobs:
             --addons-path="$GITHUB_WORKSPACE/odoo/addons,$GITHUB_WORKSPACE/addon" \
             --init=base,odoo_access_visualizer \
             --test-enable --test-tags=/odoo_access_visualizer \
-            --stop-after-init --log-level=test
+            --stop-after-init --log-level=test 2>&1 | tee "$RUNNER_TEMP/oav-odoo-tests.log"
+          grep -Eq "odoo_access_visualizer: [0-9]+ tests" "$RUNNER_TEMP/oav-odoo-tests.log"

@@ -304,10 +304,12 @@
                         <p>The comparison is read-only and includes nodes, relationships and findings.</p>
                     </div>
                     <div t-else="" class="oav_compare_content">
+                        <div t-if="state.compare.nodes.truncated.source or state.compare.edges.truncated.source or state.compare.findings.truncated.source" class="oav_budget_notice">This comparison is capped at 500 records per category. Narrow the snapshots or use a future paged detail view for the complete change set.</div>
                         <div class="oav_compare_summary">
                             <article class="oav_compare_card"><strong><t t-esc="state.compare.summary.nodes_added"/></strong><span>Objects added</span></article>
                             <article class="oav_compare_card"><strong><t t-esc="state.compare.summary.nodes_removed"/></strong><span>Objects removed</span></article>
                             <article class="oav_compare_card"><strong><t t-esc="state.compare.summary.nodes_changed"/></strong><span>Objects changed</span></article>
+                            <article class="oav_compare_card"><strong><t t-esc="state.compare.summary.edges_added"/></strong><span>Relationships added</span></article>
                             <article class="oav_compare_card"><strong><t t-esc="state.compare.summary.findings_added"/></strong><span>New findings</span></article>
                         </div>
                         <section class="oav_compare_panel">
@@ -315,6 +317,13 @@
                             <div class="oav_compare_columns">
                                 <div><h3>Added</h3><ul><li t-foreach="state.compare.nodes.added" t-as="item" t-key="`a-${item.id}`"><span class="oav_change_badge oav_change_added">+</span><t t-esc="item.label"/><small><t t-esc="item.type"/></small></li></ul></div>
                                 <div><h3>Removed</h3><ul><li t-foreach="state.compare.nodes.removed" t-as="item" t-key="`r-${item.id}`"><span class="oav_change_badge oav_change_removed">−</span><t t-esc="item.label"/><small><t t-esc="item.type"/></small></li></ul></div>
+                            </div>
+                        </section>
+                        <section class="oav_compare_panel">
+                            <div class="oav_panel_header"><div><div class="oav_kicker">SECONDARY CHANGES</div><h2>Relationships and findings</h2></div></div>
+                            <div class="oav_compare_columns">
+                                <div><h3>Relationships added</h3><ul><li t-foreach="state.compare.edges.added" t-as="item" t-key="`ea-${item.id}`"><span class="oav_change_badge oav_change_added">+</span><t t-esc="item.type"/><small><t t-esc="item.source"/> → <t t-esc="item.target"/></small></li></ul></div>
+                                <div><h3>Findings added</h3><ul><li t-foreach="state.compare.findings.added" t-as="item" t-key="`fa-${item.fingerprint}`"><span class="oav_change_badge oav_change_added">+</span><t t-esc="item.title"/><small><t t-esc="item.severity"/></small></li></ul></div>
                             </div>
                         </section>
                     </div>

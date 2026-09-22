@@ -329,7 +329,7 @@ export class AccessVisualizerAction extends Component {
         const total = graph?.total_nodes || 0;
         const rendered = graph?.rendered_nodes || 0;
         return rendered && rendered !== total
-            ? `${rendered} ${_t("of")} ${total} ${_t("objects in focus")}`
+            ? `${total} ${_t("matching objects")} · ${rendered} ${_t("rendered with context")}`
             : `${total} ${_t("objects in focus")}`;
     }
 

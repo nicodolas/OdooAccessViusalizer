@@ -220,7 +220,7 @@
     --oav-card: rgba(255, 255, 255, .88);
     --oav-ink: #12252a;
     --oav-ink-soft: #486268;
-    --oav-muted: #74878a;
+    --oav-muted: #5f7276;
     --oav-line: #dce7e4;
     --oav-accent: #087f73;
     --oav-accent-dark: #07584f;
@@ -449,6 +449,8 @@
 .oav_root .oav_compare_columns ul { display: grid; gap: 7px; margin: 10px 0 0; padding: 0; list-style: none; }
 .oav_root .oav_compare_columns li { display: grid; grid-template-columns: 25px 1fr auto; gap: 8px; align-items: center; padding: 9px; border-radius: 9px; background: #f6faf8; font-size: .8rem; }
 .oav_root .oav_compare_columns small { color: var(--oav-muted); }
+.oav_root .oav_matrix_panel { overflow-x: auto; }
+.oav_root .oav_matrix_panel .oav_permission_matrix { min-width: 680px; }
 .oav_root .oav_change_badge { display: inline-grid; place-items: center; width: 22px; height: 22px; border-radius: 50%; font-weight: 800; }
 .oav_root .oav_change_added { background: #dff3ee; color: var(--oav-accent-dark); }
 .oav_root .oav_change_removed { background: #fae6e4; color: var(--oav-danger); }

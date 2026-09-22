@@ -113,7 +113,10 @@ class AccessGraphQuery:
         edge_by_key = {}
 
         for _hop in range(self.EXPANSION_HOPS):
-            if not frontier or len(nodes_by_key) >= self.NODE_LIMIT:
+            if not frontier:
+                break
+            if len(nodes_by_key) >= self.NODE_LIMIT:
+                budget_exceeded = True
                 break
             edge_domain = [
                 ("snapshot_id", "=", snapshot.id),
@@ -147,10 +150,12 @@ class AccessGraphQuery:
 
         nodes = list(nodes_by_key.values())
         keys = set(nodes_by_key)
-        edges = [
+        all_edges = [
             edge for edge in edge_by_key.values()
             if edge.source_key in keys and edge.target_key in keys
-        ][: self.EDGE_LIMIT]
+        ]
+        budget_exceeded |= len(all_edges) > self.EDGE_LIMIT
+        edges = all_edges[: self.EDGE_LIMIT]
         return {
             "nodes": [self._node_payload(node) for node in nodes],
             "edges": [self._edge_payload(edge) for edge in edges],
@@ -177,7 +182,8 @@ class AccessGraphQuery:
         acl_nodes = Node.search([("snapshot_id", "=", snapshot.id), ("node_type", "=", "acl")])
         acl_keys = {
             node.node_key for node in acl_nodes
-            if bool((node.metadata_json or {}).get(permission_field))
+            if bool((node.metadata_json or {}).get("active", True))
+            and bool((node.metadata_json or {}).get(permission_field))
         }
         if not acl_keys:
             return set()
@@ -280,12 +286,22 @@ class AccessGraphQuery:
         def stable(value):
             return json.dumps(value or {}, sort_keys=True, default=str)
 
-        current_nodes = {node.node_key: node for node in Node.search([("snapshot_id", "=", current.id)])}
-        baseline_nodes = {node.node_key: node for node in Node.search([("snapshot_id", "=", baseline.id)])}
-        current_edges = {self._edge_payload(edge)["id"]: edge for edge in Edge.search([("snapshot_id", "=", current.id)])}
-        baseline_edges = {self._edge_payload(edge)["id"]: edge for edge in Edge.search([("snapshot_id", "=", baseline.id)])}
-        current_findings = {finding.fingerprint or f"{finding.finding_type}:{finding.title}": finding for finding in Finding.search([("snapshot_id", "=", current.id)])}
-        baseline_findings = {finding.fingerprint or f"{finding.finding_type}:{finding.title}": finding for finding in Finding.search([("snapshot_id", "=", baseline.id)])}
+        def bounded(model, snapshot_id, order):
+            records = model.search([("snapshot_id", "=", snapshot_id)], order=order, limit=self.COMPARE_LIMIT + 1)
+            return records[: self.COMPARE_LIMIT], len(records) > self.COMPARE_LIMIT
+
+        current_nodes_records, current_nodes_truncated = bounded(Node, current.id, "node_key, id")
+        baseline_nodes_records, baseline_nodes_truncated = bounded(Node, baseline.id, "node_key, id")
+        current_edges_records, current_edges_truncated = bounded(Edge, current.id, "id")
+        baseline_edges_records, baseline_edges_truncated = bounded(Edge, baseline.id, "id")
+        current_findings_records, current_findings_truncated = bounded(Finding, current.id, "fingerprint, id")
+        baseline_findings_records, baseline_findings_truncated = bounded(Finding, baseline.id, "fingerprint, id")
+        current_nodes = {node.node_key: node for node in current_nodes_records}
+        baseline_nodes = {node.node_key: node for node in baseline_nodes_records}
+        current_edges = {self._edge_payload(edge)["id"]: edge for edge in current_edges_records}
+        baseline_edges = {self._edge_payload(edge)["id"]: edge for edge in baseline_edges_records}
+        current_findings = {finding.fingerprint or f"{finding.finding_type}:{finding.title}": finding for finding in current_findings_records}
+        baseline_findings = {finding.fingerprint or f"{finding.finding_type}:{finding.title}": finding for finding in baseline_findings_records}
 
         def diff_records(current_map, baseline_map, payload):
             added_keys = sorted(current_map.keys() - baseline_map.keys())
@@ -320,6 +336,12 @@ class AccessGraphQuery:
         nodes = diff_records(current_nodes, baseline_nodes, self._node_payload)
         edges = diff_records(current_edges, baseline_edges, self._edge_payload)
         findings = diff_records(current_findings, baseline_findings, finding_payload)
+        for result, current_truncated, baseline_truncated in (
+            (nodes, current_nodes_truncated, baseline_nodes_truncated),
+            (edges, current_edges_truncated, baseline_edges_truncated),
+            (findings, current_findings_truncated, baseline_findings_truncated),
+        ):
+            result["truncated"]["source"] = current_truncated or baseline_truncated
         return {
             "baseline": baseline._status_payload(),
             "current": current._status_payload(),
