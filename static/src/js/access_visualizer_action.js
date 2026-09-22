@@ -64,9 +64,11 @@ export class AccessVisualizerAction extends Component {
                 this.state.compareBaselineId = null;
             }
             const latest = this.state.dashboard.latest;
-            this.state.findings = latest
+            const findings = latest
                 ? (this.state.dashboard.overview?.top_findings || await this.api.findings(latest.id))
                 : [];
+            if (requestToken !== this.reloadToken) return;
+            this.state.findings = findings;
         } catch (error) {
             if (requestToken === this.reloadToken) {
                 this.state.error = error.message || _t("Unable to load Access Visualizer.");
@@ -143,10 +145,14 @@ export class AccessVisualizerAction extends Component {
 
     async loadCompare() {
         const currentId = this.state.dashboard?.latest?.id;
-        if (!currentId || !this.state.compareBaselineId) return;
+        const baselineId = this.state.compareBaselineId;
+        if (!currentId || !baselineId) return;
         try {
-            this.state.compare = await this.api.compare(currentId, this.state.compareBaselineId);
+            const compare = await this.api.compare(currentId, baselineId);
+            if (baselineId !== this.state.compareBaselineId) return;
+            this.state.compare = compare;
         } catch (error) {
+            if (baselineId !== this.state.compareBaselineId) return;
             this.state.error = error.message || _t("Unable to compare snapshots.");
         }
     }
@@ -233,16 +239,28 @@ export class AccessVisualizerAction extends Component {
                 aclByGroup.set(edge.source, [...(aclByGroup.get(edge.source) || []), target]);
             }
         }
-        for (const [groupId, acls] of aclByGroup) {
+        for (const [rootGroupId] of aclByGroup) {
+            const effectiveGroups = new Set([rootGroupId]);
+            const frontier = [rootGroupId];
+            while (frontier.length) {
+                const groupId = frontier.pop();
+                for (const edge of this.state.graph.edges || []) {
+                    if (edge.type === "implied" && edge.source === groupId && !effectiveGroups.has(edge.target)) {
+                        effectiveGroups.add(edge.target);
+                        frontier.push(edge.target);
+                    }
+                }
+            }
+            const acls = [...effectiveGroups].flatMap((groupId) => aclByGroup.get(groupId) || []);
             for (const acl of acls) {
                 const modelEdge = (this.state.graph.edges || []).find(
                     (edge) => edge.type === "protects" && edge.source === acl.id && nodes.get(edge.target)?.type === "model"
                 );
                 const model = modelEdge && nodes.get(modelEdge.target);
                 if (!model) continue;
-                const key = `${groupId}:${model.id}`;
+                const key = `${rootGroupId}:${model.id}`;
                 const current = rows.get(key) || {
-                    group: nodes.get(groupId).label,
+                    group: nodes.get(rootGroupId).label,
                     model: model.label,
                     read: false,
                     write: false,

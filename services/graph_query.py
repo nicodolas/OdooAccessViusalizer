@@ -9,6 +9,7 @@ class AccessGraphQuery:
     EDGE_LIMIT = 800
     SEED_LIMIT = 32
     EXPANSION_HOPS = 2
+    COMPARE_LIMIT = 500
 
     NODE_LABELS = {
         "category": "Module categories",
@@ -287,14 +288,24 @@ class AccessGraphQuery:
         baseline_findings = {finding.fingerprint or f"{finding.finding_type}:{finding.title}": finding for finding in Finding.search([("snapshot_id", "=", baseline.id)])}
 
         def diff_records(current_map, baseline_map, payload):
-            added = [payload(current_map[key]) for key in current_map.keys() - baseline_map.keys()]
-            removed = [payload(baseline_map[key]) for key in baseline_map.keys() - current_map.keys()]
+            added_keys = sorted(current_map.keys() - baseline_map.keys())
+            removed_keys = sorted(baseline_map.keys() - current_map.keys())
             changed = []
-            for key in current_map.keys() & baseline_map.keys():
+            for key in sorted(current_map.keys() & baseline_map.keys()):
                 current_value, baseline_value = payload(current_map[key]), payload(baseline_map[key])
                 if stable(current_value) != stable(baseline_value):
                     changed.append({"key": key, "current": current_value, "baseline": baseline_value})
-            return {"added": added, "removed": removed, "changed": changed}
+            return {
+                "added": [payload(current_map[key]) for key in added_keys[: self.COMPARE_LIMIT]],
+                "removed": [payload(baseline_map[key]) for key in removed_keys[: self.COMPARE_LIMIT]],
+                "changed": changed[: self.COMPARE_LIMIT],
+                "truncated": {
+                    "added": len(added_keys) > self.COMPARE_LIMIT,
+                    "removed": len(removed_keys) > self.COMPARE_LIMIT,
+                    "changed": len(changed) > self.COMPARE_LIMIT,
+                },
+                "counts": {"added": len(added_keys), "removed": len(removed_keys), "changed": len(changed)},
+            }
 
         def finding_payload(finding):
             return {
@@ -313,9 +324,9 @@ class AccessGraphQuery:
             "baseline": baseline._status_payload(),
             "current": current._status_payload(),
             "summary": {
-                "nodes_added": len(nodes["added"]), "nodes_removed": len(nodes["removed"]), "nodes_changed": len(nodes["changed"]),
-                "edges_added": len(edges["added"]), "edges_removed": len(edges["removed"]), "edges_changed": len(edges["changed"]),
-                "findings_added": len(findings["added"]), "findings_removed": len(findings["removed"]), "findings_changed": len(findings["changed"]),
+                "nodes_added": nodes["counts"]["added"], "nodes_removed": nodes["counts"]["removed"], "nodes_changed": nodes["counts"]["changed"],
+                "edges_added": edges["counts"]["added"], "edges_removed": edges["counts"]["removed"], "edges_changed": edges["counts"]["changed"],
+                "findings_added": findings["counts"]["added"], "findings_removed": findings["counts"]["removed"], "findings_changed": findings["counts"]["changed"],
             },
             "nodes": nodes,
             "edges": edges,
