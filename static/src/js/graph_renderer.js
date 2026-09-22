@@ -77,7 +77,7 @@ export class AccessGraphRenderer {
         return {
             ...graph,
             nodes: graph.nodes.filter((node) => related.has(node.id)),
-            edges: graph.edges.filter((edge) => related.has(edge.source) && related.has(edge.target)),
+            edges: (graph.edges || []).filter((edge) => related.has(edge.source) && related.has(edge.target)),
         };
     }
 
