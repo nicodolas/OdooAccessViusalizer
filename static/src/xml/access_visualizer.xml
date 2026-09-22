@@ -191,7 +191,19 @@
                                     <dt>Source</dt><dd><t t-esc="state.selectedNode.node.source_model"/> #<t t-esc="state.selectedNode.node.source_id"/></dd>
                                     <dt>Module</dt><dd><t t-esc="state.selectedNode.node.module"/></dd>
                                 </dl>
+                                <div t-if="getAccessModes(state.selectedNode.node.metadata).length" class="oav_access_modes">
+<div class="oav_detail_label">CRUD flags on this access record</div>
+                                    <span t-foreach="getAccessModes(state.selectedNode.node.metadata)" t-as="mode" t-key="mode" class="oav_mode_chip"><t t-esc="mode"/></span>
+                                </div>
                                 <pre class="oav_metadata"><t t-esc="formatJson(state.selectedNode.node.metadata)"/></pre>
+                                <div t-if="state.selectedNode.relationships?.length" class="oav_relationships">
+                                    <div class="oav_detail_label">Evidence path</div>
+                                    <button t-foreach="state.selectedNode.relationships.slice(0, 40)" t-as="relationship" t-key="`${relationship.edge_type}-${relationship.node.key}`" t-on-click="() => this.selectNode(relationship.node.key)" class="oav_relationship">
+                                        <span class="oav_relationship_edge"><t t-esc="relationship.edge_type"/></span>
+                                        <strong><t t-esc="relationship.node.label"/></strong>
+                                        <span class="oav_relationship_type"><t t-esc="relationship.node.type"/></span>
+                                    </button>
+                                </div>
                             </div>
                             <p t-else="" class="oav_detail_empty">Click any node to see its source, relationships and evidence.</p>
                         </aside>

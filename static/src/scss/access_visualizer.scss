@@ -134,6 +134,14 @@
     .oav_detail dt { color: var(--oav-muted); }
     .oav_detail dd { margin: 0; overflow-wrap: anywhere; }
     .oav_metadata { max-height: 260px; overflow: auto; padding: 10px; background: #f2eee5; color: var(--oav-ink); font-size: .7rem; }
+    .oav_detail_label { margin: 15px 0 7px; color: var(--oav-muted); font: 700 .66rem "IBM Plex Mono", monospace; letter-spacing: .08em; text-transform: uppercase; }
+    .oav_access_modes { display: flex; flex-wrap: wrap; gap: 5px; }
+    .oav_mode_chip { padding: 4px 7px; border: 1px solid var(--oav-accent-dark); background: var(--oav-accent); font: 700 .65rem "IBM Plex Mono", monospace; }
+    .oav_relationships { display: grid; gap: 5px; max-height: 240px; overflow: auto; }
+    .oav_relationship { display: grid; grid-template-columns: 74px 1fr auto; gap: 7px; align-items: center; padding: 7px 8px; border: 1px solid var(--oav-line); background: #fffdf8; color: var(--oav-ink); text-align: left; font-size: .72rem; }
+    .oav_relationship:hover { border-color: var(--oav-accent-dark); background: var(--oav-accent); }
+    .oav_relationship_edge { color: var(--oav-accent-dark); font: 700 .6rem "IBM Plex Mono", monospace; text-transform: uppercase; }
+    .oav_relationship_type { color: var(--oav-muted); font-size: .64rem; }
     .oav_detail_empty { margin-top: 30px; color: var(--oav-muted); line-height: 1.55; }
     .oav_budget_notice { margin-bottom: 10px; padding: 9px 12px; background: #49361f; color: #ffd39e; font-size: .8rem; }
     .oav_focus_empty { display: grid; justify-items: center; gap: 9px; min-height: 350px; padding: 80px 22px; border: 1px dashed var(--oav-line); background: var(--oav-card); text-align: center; }

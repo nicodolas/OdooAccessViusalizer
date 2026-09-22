@@ -165,6 +165,18 @@ export class AccessVisualizerAction extends Component {
         return JSON.stringify(value || {}, null, 2);
     }
 
+    getAccessModes(metadata) {
+        const labels = {
+            perm_read: _t("Read"),
+            perm_write: _t("Write"),
+            perm_create: _t("Create"),
+            perm_unlink: _t("Delete"),
+        };
+        return Object.entries(labels)
+            .filter(([key]) => metadata?.[key])
+            .map(([, label]) => label);
+    }
+
     startPollingIfNeeded() {
         if (this.state.dashboard?.active && !this.pollTimer) {
             this.pollTimer = setInterval(() => this.reload(), 5000);

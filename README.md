@@ -51,6 +51,10 @@ failed states. A failed scan never replaces the latest successful snapshot.
 Every finding includes affected nodes and evidence. Use the standard Odoo
 security screens to remediate a finding.
 
+Selecting a node opens an evidence path listing related ACLs, rules, groups,
+models and menus. CRUD capabilities are shown when they are available on the
+selected access record.
+
 ### Performance target
 
 The documented benchmark targets approximately 1,000 groups and 20,000
