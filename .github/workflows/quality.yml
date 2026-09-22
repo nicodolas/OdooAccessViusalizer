@@ -77,4 +77,5 @@ jobs:
             -d oav_ci --without-demo=all \
             --addons-path="$GITHUB_WORKSPACE/odoo/addons,$GITHUB_WORKSPACE/addon" \
             --init=base,odoo_access_visualizer \
-            --test-enable --stop-after-init --log-level=test
+            --test-enable --test-tags=/odoo_access_visualizer \
+            --stop-after-init --log-level=test
